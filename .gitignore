@@ -3,3 +3,11 @@
 
 # Ada Library Information
 *.ali
+
+# Bin folders
+bin/
+tests/bin
+
+# Obj folder
+obj/
+tests/obj
