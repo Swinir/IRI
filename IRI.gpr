@@ -1,0 +1,19 @@
+project IRI is
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Exec_Dir use ".";
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnatwa", "-gnatQ");
+   end Compiler;
+
+   package Builder is
+      for Switches ("Ada") use ("-j0");
+   end Builder;
+
+   package Naming is
+      for Body_Suffix ("Ada") use ".adb";
+      for Spec_Suffix ("Ada") use ".ads";
+   end Naming;
+end IRI;
