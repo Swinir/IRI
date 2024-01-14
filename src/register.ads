@@ -66,7 +66,7 @@ package Register is
         Pre  => Variable_List.Contains_Name(Register, Name),
         Post => Variable_List.Contains(Register, (Name, T_Type, Value));
 
-    -- Fonction pour obtenir la valeur d'une variable présente dans le registre en fonciton de ça c
+    -- Fonction pour obtenir la valeur d'une variable présente dans le registre en fonciton de son nom
     --
     -- Paramètres :
     --     Register : le registre à partir duquel obtenir
@@ -86,5 +86,14 @@ package Register is
         return Variable_Record with
         Pre  => Variable_List.Contains_Name(Register, Name),
         Post => Get_Variable'Result.Name = Name;
+
+    -- Function to get the length of the register
+    --
+    -- Parameters:
+    --     Register : the register to get the length of
+    --
+    -- Returns:
+    --     The length of the register
+    function Length(Register : in Register_Type) return Integer;
 
 end Register;
