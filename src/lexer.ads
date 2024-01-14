@@ -10,7 +10,7 @@ package Lexer is
 
     -- Procédure principe qui analyse et enregistre les mots clés d'un programme en mémoire
     -- Pour chaque ligne dans la liste des lignes, extrait les instructions et les enregistre sous formes de mots clés (Tokens) en mémoire.
-    --  ex : Memoire : [ { "INIT", "L1", "INTEGER", "" }, -- initialise une variable avec son nom 
+    --  ex : Memoire : [ { "INIT", "T1", "INTEGER", "" }, -- initialise une variable avec son nom 
     --                  { "T1", "2", "", "" }, -- affectation d'une valeur à la variable T1
     --                  { "T3", "25", "*", "T1" },  -- affectation d'un calcul avec l'opérateur * de 25 et la variable T1 sur T3
     --                  { "GOTO", "L1", "", "" } ]   -- Jump à la ligne en valeur du label L1
@@ -86,7 +86,7 @@ package Lexer is
     --
     -- Mot clé N.1 : Enregistre le premier mot clé (PROGRAM) en tant que premier token
     --
-    -- Ex {"PROGRAM", "N", "INTEGER", ""}
+    -- Ex {"PROGRAM", "", "", ""}
     --
     --
     -- Nécessite :
