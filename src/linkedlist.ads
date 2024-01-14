@@ -19,6 +19,7 @@ package LinkedList is
 	procedure Init(Linked_List : out T_Linked_List) with
 		Post => Is_Empty (Linked_List);
 
+
    -- Ajoute un élément à la liste chaînée.
    --
    -- Paramètres :
@@ -30,7 +31,7 @@ package LinkedList is
    --     La longueur de la liste chaînée a augmenté de 1
    --     Le dernier élément de la liste chaînée est les données ajoutées
    procedure Append(Linked_List : in out T_Linked_List; Data : in Element_Type);
-      -- Post => not Is_Empty (Linked_List) and then Length(Linked_List) - 1 = Length((Linked_List'Old)) and then Get_Data(Linked_List, Length(Linked_List)) = Data;
+
 
    -- Retire un élément de la liste chaînée.
    --
@@ -47,6 +48,7 @@ package LinkedList is
       Pre => not Is_Empty (Linked_List),
       Post => Length(Linked_List) = Length((Linked_List'Old)) - 1;
 
+
    -- Vérifie si la liste chaînée est vide.
    --
    -- Paramètres :
@@ -56,6 +58,7 @@ package LinkedList is
    --     Vrai si la liste chaînée est vide, faux sinon
    function Is_Empty(Linked_List : in T_Linked_List) return Boolean;
 
+
    -- Obtient la longueur de la liste chaînée.
    --
    -- Paramètres :
@@ -64,6 +67,7 @@ package LinkedList is
    -- Renvoie :
    --     La longueur de la liste chaînée
    function Length(LinkedList : in T_Linked_List) return Integer;
+
 
    -- Efface tous les éléments de la liste chaînée.
    --
@@ -78,6 +82,7 @@ package LinkedList is
    procedure Clear(Linked_List : in out T_Linked_List) with
       Pre => not Is_Empty (Linked_List),
       Post => Is_Empty (Linked_List);
+
 
    -- Obtient les données à un index spécifique dans la liste chaînée.
    --
@@ -96,6 +101,7 @@ package LinkedList is
       Pre => not Is_Empty (Linked_List) and then Index in 1 .. Length(Linked_List),
       Post => Get_Position(Linked_List, Get_Data'Result) = Index;
 
+
    -- Obtient la position d'un élément spécifique dans la liste chaînée.
    --
    -- Paramètres :
@@ -110,6 +116,30 @@ package LinkedList is
    function Get_Position(Linked_List : in T_Linked_List; Data : in Element_Type) return Integer with
       Pre => not Is_Empty (Linked_List),
       Post => (Get_Position'Result in 1 .. Length(Linked_List)) or else (Get_Position'Result = -1);
+
+   
+   -- Vérifie si la liste chaînée contient un élément spécifique.
+   --
+   -- Paramètres :
+   --     Linked_List : la liste chaînée à vérifier
+   --     Data : les données à rechercher
+   --
+   -- Renvoie :
+   --     Vrai si l'élément est trouvé dans la liste chaînée, faux sinon
+   function Contains(Linked_List : in T_Linked_List; Data : in Element_Type) return Boolean with
+      Pre => not Is_Empty (Linked_List);
+
+
+   -- Vérifie si la liste chaînée contient un élément spécifique.
+   --
+   -- Paramètres :
+   --     Linked_List : la liste chaînée à vérifier
+   --     Name : le nom à rechercher
+   --
+   -- Renvoie :
+   --     Vrai si l'élément est trouvé dans la liste chaînée, faux sinon
+   function Contains_Name(Linked_List : in T_Linked_List; Name : in String) return Boolean with
+      Pre => not Is_Empty (Linked_List);
 
 
    -- Imprime tous les éléments de la liste chaînée.
