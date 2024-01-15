@@ -1,2 +1,2 @@
 # IRI
-Intermediate representation Intepretor
+Intermediate representation Interpreter
