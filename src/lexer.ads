@@ -1,4 +1,5 @@
 -- Spécification de lexer, module qui découpe les lignes d'un programmes, en un ensemble d'instructions evaluable par evaluator.
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Memory;
 with Common_Types;
 
@@ -6,7 +7,6 @@ with Common_Types;
 package Lexer is
 
     subtype T_Words_List is Common_Types.String_List;
-
 
     -- Procédure principe qui analyse et enregistre les mots clés d'un programme en mémoire
     -- Pour chaque ligne dans la liste des lignes, extrait les instructions et les enregistre sous formes de mots clés (Tokens) en mémoire.
@@ -55,7 +55,7 @@ package Lexer is
     --     Instructions (in): L'engistrement qui contiendra les 4 tokens
     --     Mémoire (in out): La mémoire contenant les différentes instructions du programme
     procedure Enregistrer_Instructions(Instructions : in Memory.T_Instructions; Memoire : in out Memory.T_Memory) with
-        Pre => Instructions.Token1 /= Character'Val(0), -- TODO : CHANGE THE TYPE
+        Pre => Instructions.Token1 /= To_Unbounded_String(""),
         Post => Memory.Length(Memoire) > 0;
     
     -- Cette procédure identifie les mots clés et génére le quadruplet de mots clés (tokens)
@@ -78,7 +78,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots) and Index >= 0,
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé PROGRAMME, trouver en début d'un programme.
@@ -100,7 +100,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Function(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion de l'intialisation des variables présente au début d'un programme.
@@ -125,7 +125,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Var_Init(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé GOTO trouvé en première position dans la liste de mots donnée.
@@ -147,8 +147,8 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Goto(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
-
+        Post => Instructions.Token1 /= To_Unbounded_String("");
+        
 
     -- Cette procédure est responsable de la gestion du mot clé IF trouvé en première position dans la liste de mots donnée.
     -- Elle gère les mots clés de l'instruction actuelle de la façon suivante :
@@ -171,7 +171,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_If(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé LABEL trouvé en première position dans la liste de mots donnée.
@@ -192,10 +192,10 @@ package Lexer is
     --
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
-    --     Jump_Labels (out): L'enregistrement qui contiendra les labels de saut
+    --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Label(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion des mots clés de valeur ou de variable trouvés en première position dans la liste de mots donnée.
@@ -219,7 +219,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
     procedure Process_Value_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé "Lire" trouvé en première position dans la liste de mots donnée.
@@ -242,7 +242,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les tokens
     procedure Process_Read(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
     -- Cette procédure est responsable de la gestion du mot clé "Ecrire" trouvé en première position dans la liste de mots donnée.
     -- Elle gère les mots clés de l'instruction actuelle de la façon suivante :
@@ -264,7 +264,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les tokens
     procedure Process_Write(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé "Début" trouvé en première position dans la liste de mots donnée.
@@ -286,7 +286,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les tokens
     procedure Process_Begin_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé "Fin" trouvé en première position dans la liste de mots donnée.
@@ -308,7 +308,7 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les tokens
     procedure Process_End_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 
     -- Cette procédure est responsable de la gestion du mot clé NULL trouvé en première position dans la liste de mots donnée.
@@ -330,6 +330,6 @@ package Lexer is
     --     Instructions (out): L'engistrement qui contiendra les tokens
     procedure Process_Null(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= Character'Val(0); -- TODO : CHANGE THE TYPE
+        Post => Instructions.Token1 /= To_Unbounded_String("");
 
 end Lexer;

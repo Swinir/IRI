@@ -1,4 +1,5 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with LinkedList;
 
 package Register is
@@ -7,9 +8,9 @@ package Register is
 
     -- Définition du type d'enregistrement Variable_Record
     type Variable_Record is record
-        Name  : String(1..50);
+        Name  : Unbounded_String;
         T_Type  : T_Types;
-        Value : String(1..50);
+        Value : Unbounded_String;
     end record;
 
     -- La procédure Put est utilisée pour afficher une variable.
@@ -39,9 +40,9 @@ package Register is
     --     La variable a été ajoutée au registre
     procedure Add_Variable
       (Register : in out Register_Type;
-        Name     : in     String;
+        Name     : in     Unbounded_String;
         T_Type     : in     T_Types;
-        Value    : in     String) with
+        Value    : in     Unbounded_String) with
         Pre  => not Variable_List.Contains(Register, (Name, T_Type, Value)),
         Post => Variable_List.Contains(Register, (Name, T_Type, Value));
 
@@ -60,9 +61,9 @@ package Register is
     --     La variable a été modifiée dans le registre
     procedure Edit_Variable
       (Register : in out Register_Type;
-        Name     : in     String;
+        Name     : in     Unbounded_String;
         T_Type     : in     T_Types;
-        Value    : in     String) with
+        Value    : in     Unbounded_String) with
         Pre  => Variable_List.Contains_Name(Register, Name),
         Post => Variable_List.Contains(Register, (Name, T_Type, Value));
 
@@ -82,7 +83,7 @@ package Register is
     --     La variable retournée est celle demandée
     function Get_Variable
       (Register : in Register_Type;
-        Name     : in String)
+        Name     : in Unbounded_String)
         return Variable_Record with
         Pre  => Variable_List.Contains_Name(Register, Name),
         Post => Get_Variable'Result.Name = Name;

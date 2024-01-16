@@ -1,3 +1,4 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Memory;
 with Register;
 
@@ -17,7 +18,7 @@ package Evaluator is
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Initialisation
@@ -44,7 +45,7 @@ procedure Initialize(Memoire : in out Memory.T_Memory; Registre : in out Registe
 --      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas d’une affectation avec opération
@@ -60,7 +61,7 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_
 --      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas d’un branchement conditionnel
@@ -77,7 +78,7 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Memoire : in out 
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Conditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas d’un branchement inconditionnel
@@ -94,7 +95,7 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Mem
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas d’une lecture
@@ -110,7 +111,7 @@ procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out M
 --      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas d’écriture
@@ -126,7 +127,7 @@ procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T
 --      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= ' ', -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String(""),
     Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
 
 -- Cas Null
@@ -142,6 +143,6 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.
 -- Paramètres :
 --      IR (in) : L'instruction null à traiter.
 procedure Null_Operation(IR : in Memory.T_Instructions) with
-    Pre => IR.Token1 /= ' '; -- TODO : Change to string type
+    Pre => IR.Token1 /= To_Unbounded_String("");
 
 end Evaluator;

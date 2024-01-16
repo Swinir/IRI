@@ -1,5 +1,5 @@
 -- Spécification d'un module LinkedList, une liste chaînée.
-
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 generic
    type Element_Type is private;
@@ -20,6 +20,21 @@ package LinkedList is
 		Post => Is_Empty (Linked_List);
 
 
+   -- Ajoute un élément au début de la liste chaînée.
+   --
+   -- Paramètres :
+   --     Linked_List : la liste chaînée à laquelle ajouter
+   --     Data : les données à ajouter
+   --
+   -- Assure :
+   --     La liste chaînée n'est pas vide après l'opération
+   --     La longueur de la liste chaînée a augmenté de 1
+   --     Le premier élément de la liste chaînée est les données ajoutées
+   procedure Insert_Beginning(Linked_List : in out T_Linked_List; Data : in Element_Type) with 
+      Pre => not Is_Empty(Linked_List),
+      Post => Length(Linked_List) = Length(Linked_List'Old) + 1;
+
+   
    -- Ajoute un élément à la liste chaînée.
    --
    -- Paramètres :
@@ -30,22 +45,24 @@ package LinkedList is
    --     La liste chaînée n'est pas vide après l'opération
    --     La longueur de la liste chaînée a augmenté de 1
    --     Le dernier élément de la liste chaînée est les données ajoutées
-   procedure Append(Linked_List : in out T_Linked_List; Data : in Element_Type);
+   procedure Append(Linked_List : in out T_Linked_List; Data : in Element_Type) with 
+      Pre => not Is_Empty(Linked_List),
+      Post => Length(Linked_List) = Length(Linked_List'Old) + 1;
 
 
-   -- Retire un élément de la liste chaînée.
+   -- Retire un élément de la liste chaînée à l'index indiqué.
    --
    -- Paramètres :
    --     Linked_List : la liste chaînée à partir de laquelle retirer
    --     Data : les données à retirer
    --
    -- Nécessite :
-   --     Linked_List n'est pas vide
+   --     Linked_List n'est pas vide et l'index existe
    --
    -- Assure :
    --     La longueur de la liste chaînée a diminué de 1
-   procedure Pop(Linked_List : in out T_Linked_List; Data : in Element_Type) with
-      Pre => not Is_Empty (Linked_List),
+   procedure Pop(Linked_List : in out T_Linked_List; Index : in Integer) with
+      Pre => not Is_Empty (Linked_List) and Index <= Length(Linked_List),
       Post => Length(Linked_List) = Length((Linked_List'Old)) - 1;
 
 
@@ -138,7 +155,7 @@ package LinkedList is
    --
    -- Renvoie :
    --     Vrai si l'élément est trouvé dans la liste chaînée, faux sinon
-   function Contains_Name(Linked_List : in T_Linked_List; Name : in String) return Boolean with
+   function Contains_Name(Linked_List : in T_Linked_List; Name : in Unbounded_String) return Boolean with
       Pre => not Is_Empty (Linked_List);
 
 

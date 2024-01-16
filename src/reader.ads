@@ -1,4 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Common_Types;
 
 package Reader is
@@ -103,8 +105,8 @@ package Reader is
    -- Exception : 
    --    File_Read_Error : Is_Open(Handle) = False 
    function Get_Lines(Handle : in File_Handle) return File_Content_List with
-      Pre  => Is_Open(Handle) = True;
-      -- Post => String_Link_List.Length(Get_Lines'Result) >= 0; -- /!\ TODO : Réparer cette post condition /!\ --
+      Pre  => Is_Open(Handle) = True,
+      Post => Common_Types.Length(Get_Lines'Result) >= 0;
 
    -- Exceptions pour gérer les erreurs de fichier
    File_Open_Error : exception;

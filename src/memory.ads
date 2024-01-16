@@ -1,10 +1,11 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with LinkedList;
 
 -- Le package Memory fournit une liste chaînée pour stocker les instructions.
 package Memory is
    -- Une ligne d'instruction est un enregistrement des quatre tokens de cette même ligne.
    type T_Instructions is record
-      Token1, Token2, Token3, Token4 : Character;
+      Token1, Token2, Token3, Token4 : Unbounded_String;
    end record;
 
    -- La procédure Put est utilisée pour afficher une instruction.

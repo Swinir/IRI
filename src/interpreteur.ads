@@ -1,3 +1,4 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Memory;
 with Register;
 with Evaluator;
@@ -24,7 +25,7 @@ function Get_PC(PC : in T_PC) return Integer;
 -- Getter pour T_IR
 --
 -- Cette fonction renvoie une représentation en chaîne de caractères du registre d'instruction.
-function Get_IR_Value(IR : in T_IR) return String;
+function Get_IR_Value(IR : in T_IR) return Unbounded_String;
 
 -- Incrémentation du compteur de programme
 --
@@ -45,13 +46,13 @@ procedure Display_Info(Memory : in T_Memory; Registers : in Register.Register_Ty
 -- Interprétation d'une instruction
 --
 -- Cette procédure évalue et exécute une seule instruction.
-procedure Interpret_Single_Instruction(IR : in out T_IR; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; T_PC : in out Integer);
+procedure Interpret_Single_Instruction(IR : in out T_IR; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out T_PC);
 
 -- Interprétation d'un programme
 --
 -- Cette procédure interprète un programme en langage intermédiaire complet.
 -- Elle lit le programme et récupère son contenu (Reader), réalise la découpe du programme en chaîne de caractères directement vers des instructions (Lexer), et évalue et exécute toutes les instructions (Evaluator).
-procedure Interpret(Path : in String; IR : in out T_IR; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; T_PC : in out Integer);
+procedure Interpret(Path : in Unbounded_String; IR : in out T_IR; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out T_PC);
 
 private
    type T_PC is new Integer;
