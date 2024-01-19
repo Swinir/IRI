@@ -5,7 +5,10 @@ with LinkedList;
 package Memory is
    -- Une ligne d'instruction est un enregistrement des quatre tokens de cette même ligne.
    type T_Instructions is record
-      Token1, Token2, Token3, Token4 : Unbounded_String;
+      Token1 : Unbounded_String := To_Unbounded_String("");
+      Token2 : Unbounded_String := To_Unbounded_String("");
+      Token3 : Unbounded_String := To_Unbounded_String("");
+      Token4 : Unbounded_String := To_Unbounded_String("");
    end record;
 
    -- La procédure Put est utilisée pour afficher une instruction.
