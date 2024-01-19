@@ -145,7 +145,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Goto(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Goto(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
         
@@ -169,7 +169,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_If(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_If(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -178,9 +178,9 @@ package Lexer is
     -- Si un label est trouvé ce dernier est extrait et supprimer pour ensuite retraiter la suite de l'instruction
     -- Elle gère les mots clés de l'instruction actuelle de la façon suivante :
     --
-    -- Mot clé N.1 : Enregistre le premier mot clé (LABEL) en tant que premier token si 'L' trouvé en début
-    -- Mot clé N.3 : Enregistre le troisième mot clé (Nom) en tant que deuxième token
-    -- Mot clé N.3 : Enregistre le troisième mot clé (Numéro de ligne) en tant que troisième token
+    -- Mot clé N.1 : Enregistre le mot "LABEL" en tant que premier token si 'L' trouvé en début
+    -- Mot clé N.3 : Enregistre le premier mot clé (Nom) en tant que deuxième token
+    -- Mot clé N.3 : Enregistre le deuxième mot clé (Numéro de ligne) en tant que troisième token
     --
     -- Ex : {"LABEL","L1","5",""}
     --
@@ -193,7 +193,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Label(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Label(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -217,7 +217,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Value_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Value_Variable(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -240,7 +240,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les tokens
-    procedure Process_Read(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Read(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -262,7 +262,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les tokens
-    procedure Process_Write(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Write(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -284,7 +284,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les tokens
-    procedure Process_Begin_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Begin_Variable(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -306,7 +306,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les tokens
-    procedure Process_End_Variable(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_End_Variable(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -328,7 +328,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les tokens
-    procedure Process_Null(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Null(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
