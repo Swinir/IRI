@@ -138,7 +138,7 @@ package body LinkedList is
          Current := Current.All.Next;
       end loop;
       Put("]");
-      Skip_Line;
+      Put_Line("");
    end Print_List;
 
 end LinkedList;
