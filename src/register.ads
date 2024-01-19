@@ -21,6 +21,7 @@ package Register is
     --     variable : la variable à afficher
     procedure Put(variable : in Variable_Record);
 
+
     -- Instanciation du package LinkedList avec le type d'élément Variable_Record
     package Variable_List is new LinkedList(Element_Type => Variable_Record, Print_Element => Put);
     subtype Register_Type is Variable_List.T_Linked_List;
@@ -43,8 +44,9 @@ package Register is
         Name     : in     Unbounded_String;
         T_Type     : in     T_Types;
         Value    : in     Unbounded_String) with
-        Pre  => not Variable_List.Contains(Register, (Name, T_Type, Value)),
-        Post => Variable_List.Contains(Register, (Name, T_Type, Value));
+        Pre  => Variable_List.Get_Position(Register, (Name, T_Type, Value)) = -1,
+        Post => Variable_List.Get_Position(Register, (Name, T_Type, Value)) /= -1;
+
 
     -- Procédure pour modifier une variable présente dans le registre
     --
@@ -64,8 +66,9 @@ package Register is
         Name     : in     Unbounded_String;
         T_Type     : in     T_Types;
         Value    : in     Unbounded_String) with
-        Pre  => Variable_List.Contains_Name(Register, Name),
-        Post => Variable_List.Contains(Register, (Name, T_Type, Value));
+        Pre  => Contains_Name(Register, Name),
+        Post => Variable_List.Get_Position(Register, (Name, T_Type, Value)) /= -1;
+
 
     -- Fonction pour obtenir la valeur d'une variable présente dans le registre en fonciton de son nom
     --
@@ -85,8 +88,21 @@ package Register is
       (Register : in Register_Type;
         Name     : in Unbounded_String)
         return Variable_Record with
-        Pre  => Variable_List.Contains_Name(Register, Name),
+        Pre  => Contains_Name(Register, Name),
         Post => Get_Variable'Result.Name = Name;
+
+
+    -- Vérifie si le registre contient une variable.
+    --
+    -- Paramètres :
+    --     Register_Type : le registre à vérifier
+    --     Name : le nom de la variable à rechercher
+    --
+    -- Renvoie :
+    --     Vrai si la variable est trouvé dans la liste chaînée, faux sinon
+    function Contains_Name(Register : in Register_Type; Name : in Unbounded_String) return Boolean with
+        Pre => not Variable_List.Is_Empty(Register);
+
 
     -- Function to get the length of the register
     --

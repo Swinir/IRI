@@ -26,12 +26,13 @@ package LinkedList is
    --     Linked_List : la liste chaînée à laquelle ajouter
    --     Data : les données à ajouter
    --
+   -- Nécessite :
+   --    Linked_List est initialiser.
+   --
    -- Assure :
    --     La liste chaînée n'est pas vide après l'opération
    --     La longueur de la liste chaînée a augmenté de 1
-   --     Le premier élément de la liste chaînée est les données ajoutées
    procedure Insert_Beginning(Linked_List : in out T_Linked_List; Data : in Element_Type) with 
-      Pre => not Is_Empty(Linked_List),
       Post => Length(Linked_List) = Length(Linked_List'Old) + 1;
 
    
@@ -40,13 +41,13 @@ package LinkedList is
    -- Paramètres :
    --     Linked_List : la liste chaînée à laquelle ajouter
    --     Data : les données à ajouter
+   -- Nécessite :
+   --    Linked_List est initialiser.
    --
    -- Assure :
    --     La liste chaînée n'est pas vide après l'opération
    --     La longueur de la liste chaînée a augmenté de 1
-   --     Le dernier élément de la liste chaînée est les données ajoutées
    procedure Append(Linked_List : in out T_Linked_List; Data : in Element_Type) with 
-      Pre => not Is_Empty(Linked_List),
       Post => Length(Linked_List) = Length(Linked_List'Old) + 1;
 
 
@@ -125,38 +126,28 @@ package LinkedList is
    --     Linked_List : la liste chaînée dans laquelle chercher
    --     Data : les données à chercher
    --
-   -- Nécessite :
-   --     Linked_List n'est pas vide
-   --
    -- Renvoie :
    --     La position de l'élément dans la liste chaînée, ou -1 si l'élément n'est pas trouvé
    function Get_Position(Linked_List : in T_Linked_List; Data : in Element_Type) return Integer with
-      Pre => not Is_Empty (Linked_List),
       Post => (Get_Position'Result in 1 .. Length(Linked_List)) or else (Get_Position'Result = -1);
 
-   
-   -- Vérifie si la liste chaînée contient un élément spécifique.
+
+   -- Modifie les données à un index spécifique dans la liste chaînée.
    --
    -- Paramètres :
-   --     Linked_List : la liste chaînée à vérifier
-   --     Data : les données à rechercher
+   --     Linked_List : la liste chaînée dans laquelle modifier les données
+   --     Index : l'index à partir duquel modifier les données
+   --     New_Data : les nouvelles données à assigner à l'index spécifié
    --
-   -- Renvoie :
-   --     Vrai si l'élément est trouvé dans la liste chaînée, faux sinon
-   function Contains(Linked_List : in T_Linked_List; Data : in Element_Type) return Boolean with
-      Pre => not Is_Empty (Linked_List);
-
-
-   -- Vérifie si la liste chaînée contient un élément spécifique.
+   -- Nécessite :
+   --     Linked_List n'est pas vide
+   --     Index est dans la plage valide (1 à la longueur de la liste chaînée)
    --
-   -- Paramètres :
-   --     Linked_List : la liste chaînée à vérifier
-   --     Name : le nom à rechercher
-   --
-   -- Renvoie :
-   --     Vrai si l'élément est trouvé dans la liste chaînée, faux sinon
-   function Contains_Name(Linked_List : in T_Linked_List; Name : in Unbounded_String) return Boolean with
-      Pre => not Is_Empty (Linked_List);
+   -- Assure :
+   --     Les données à l'index spécifié dans la liste chaînée sont modifiées avec les nouvelles données
+   procedure Edit_Data(Linked_List : in out T_Linked_List; Index : in Integer; New_Data : in Element_Type) with
+      Pre => not Is_Empty (Linked_List) and then Index in 1 .. Length(Linked_List),
+      Post => Get_Data(Linked_List, Index) = New_Data;
 
 
    -- Imprime tous les éléments de la liste chaînée.
