@@ -1,6 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
-with LinkedList;
 package body LinkedList is
 
 	procedure Free is
@@ -39,22 +38,23 @@ package body LinkedList is
    procedure Pop(Linked_List : in out T_Linked_List; Index : in Integer) is
       Previous_Element : T_Node_Access;
       Current : T_Node_Access;
-      Element_Index : Integer;
       I : Integer;
    begin
-      if Length(Linked_List) = 1 or Index = 1 then
+      if Length(Linked_List) = 1 then
          Free(Linked_List.Head);
          Linked_List.Head := null;
       else 
+         I := 1;
          Previous_Element := Linked_List.Head;
          while I < Index-1 loop
             Previous_Element := Previous_Element.All.Next;
             I := I + 1;
          end loop;
          Current := Previous_Element.All.Next;
-         Previous_Element.Next := Current.All.Next;
+         Previous_Element.All.Next := Current.All.Next;
          Free(Current);
       end if;
+
       Linked_List.Length := Linked_List.Length - 1;
    end Pop;
 
@@ -124,15 +124,19 @@ package body LinkedList is
    end Edit_Data;
 
    procedure Print_List(Linked_List : in T_Linked_List) is
-      Current : access T_Node := Linked_List.Head;
+      Current : T_Node_Access;
    begin
+      Current := Linked_List.Head;
       Put("[");
-      while Current.All.Next /= null loop
+      while Current /= null loop
          Print_Element(Current.All.Data);
-         Put(", ");
+         
+         if Current.All.Next /= null then
+            Put(", ");
+         end if;
+         
          Current := Current.All.Next;
       end loop;
-      Print_Element(Current.All.Data);
       Put("]");
       Skip_Line;
    end Print_List;

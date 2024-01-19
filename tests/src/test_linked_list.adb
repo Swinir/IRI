@@ -41,11 +41,12 @@ procedure test_linked_list is
         Append(List, 'B');
         pragma Assert(not Is_Empty(List));
         pragma Assert(Length(List) = 2);
-        pragma Assert(Get_Data(List, 2) = Element);
+        Printer(List);
+        pragma Assert(Get_Data(List, 2) = 'B');
         Append(List, 'C');
         pragma Assert(not Is_Empty(List));
         pragma Assert(Length(List) = 3);
-        pragma Assert(Get_Data(List, 3) = Element);
+        pragma Assert(Get_Data(List, 3) = 'C');
     end Test_Append_Two;
 
     procedure Test_Pop_Two is
@@ -91,8 +92,22 @@ procedure test_linked_list is
 
     procedure Test_Pop_Multiple is
     begin
-        for I in 1..25 loop
-            Pop(List, I);
+        -- Remove C
+        Pop(List, 2);
+        pragma Assert(Get_Position(List, 'C') = -1);
+        pragma Assert(Get_Position(List, 'D') = 2);
+        pragma Assert(Length(List) = 24);
+        -- Remove Z
+        Pop(List, 24);
+        pragma Assert(Get_Position(List, 'Z') = -1);
+        pragma Assert(Length(List) = 23);
+        -- Remove E
+        Pop(List, 3);
+        pragma Assert(Get_Position(List, 'E') = -1);
+        pragma Assert(Get_Position(List, 'F') = 3);
+        pragma Assert(Get_Position(List, 'D') = 2);
+        for I in 1..22 loop
+            Pop(List, 1);
         end loop;
         pragma Assert(Is_Empty(List));
         pragma Assert(Length(List) = 0);
@@ -106,14 +121,19 @@ procedure test_linked_list is
 begin
     Put_Line("Début des tests de linked_list");
     Test_Init;
+    Printer(List);
     Test_Append;
+    Printer(List);
     Test_Pop;
+    Printer(List);
     Test_Append_Two;
+    Printer(List);
     Test_Pop_Two;
+    Printer(List);
     Test_Clear;
+    Printer(List);
     Test_Get_Data_And_Get_Position;
     Printer(List);
-    Put_Line("");
     Test_Empty_List;
     Test_Append_Multiple;
     Printer(List);
