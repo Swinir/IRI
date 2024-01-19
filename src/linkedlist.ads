@@ -1,6 +1,4 @@
 -- Spécification d'un module LinkedList, une liste chaînée.
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 generic
    type Element_Type is private;
 
