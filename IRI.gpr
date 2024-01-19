@@ -6,15 +6,19 @@ project IRI is
    
 
    package Compiler is
-      for Switches ("Ada") use ("-gnatwa", "-gnatQ");
+      for Switches ("Ada") use ("-gnatwa", "-gnata", "-g");
    end Compiler;
 
    package Builder is
-      for Switches ("Ada") use ("-j0");
+      for Switches ("Ada") use ("-s");
    end Builder;
 
    package Naming is
       for Body_Suffix ("Ada") use ".adb";
       for Spec_Suffix ("Ada") use ".ads";
    end Naming;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
 end IRI;
