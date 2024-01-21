@@ -14,17 +14,21 @@ package body Reader is
     end Close_File;
     
     function Read_Line(Handle : in File_Handle) return Unbounded_String is
+        Line_Buffer : Unbounded_String;
     begin
+        Get_Line(Handle,Line_Buffer);
+        return Line_Buffer;
     end Read_Line;
 
-    function Read_Entire_File(Handle : in File_Handle) return Unbounded_String is
+    function Read_Entire_File(Handle : in out File_Handle) return Unbounded_String is
         File_Content : Unbounded_String;
         Line_Buffer : Unbounded_String;
     begin
+        Reset(Handle);
         loop
             exit when End_Of_File(Handle);
             Get_Line(Handle,Line_Buffer);
-            File_Content := File_Content & Line_Buffer;
+            File_Content := File_Content & Line_Buffer & " ";
         end loop;
         return File_Content;
     end Read_Entire_File;
@@ -34,6 +38,7 @@ package body Reader is
         Line_List : File_Content_List;
         Line_Buffer : Unbounded_String;
     begin
+        Common_Types.Init(Line_List);
         loop
             exit when End_Of_File(Handle);
             Get_Line(Handle,Line_Buffer);
