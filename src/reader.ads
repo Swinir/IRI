@@ -2,10 +2,9 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Common_Types;
-
 package Reader is
 
-   type File_Handle is new File_Type;
+   subtype File_Handle is File_Type;
    -- Définition d'une liste chaîné contenant des chaînes de caractères.
    subtype File_Content_List is Common_Types.String_List;
    
@@ -62,9 +61,9 @@ package Reader is
    --
    -- Exception : 
    --    File_Read_Error : Is_Open(Handle) = False 
-   function Read_Line(Handle : in File_Handle) return String with
+   function Read_Line(Handle : in File_Handle) return Unbounded_String with
       Pre  => Is_Open(Handle) = True,
-      Post => Read_Line'Result'Length >= 0;
+      Post => Length(Read_Line'Result) >= 0;
 
 
    -- Lit l'intégralité du fichier ouvert.
@@ -83,9 +82,9 @@ package Reader is
    --
    -- Exception : 
    --    File_Read_Error : Is_Open(Handle) = False 
-   function Read_Entire_File(Handle : in File_Handle) return String with
+   function Read_Entire_File(Handle : in out File_Handle) return Unbounded_String with
       Pre  => Is_Open(Handle) = True,
-      Post => Read_Entire_File'Result'Length >= 0;
+      Post => Length(Read_Entire_File'Result) >= 0;
 
 
    -- Renvoie une liste chaînée contenant toutes les lignes du fichier ouvert.
@@ -109,6 +108,8 @@ package Reader is
       Post => Common_Types.Length(Get_Lines'Result) >= 0;
 
    -- Exceptions pour gérer les erreurs de fichier
+
+private 
    File_Open_Error : exception;
    File_Read_Error : exception;
    File_Close_Error : exception;

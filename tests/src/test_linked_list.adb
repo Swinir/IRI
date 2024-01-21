@@ -9,8 +9,6 @@ procedure test_linked_list is
     List : T_Linked_List;
     Element : constant Character := 'A';
 
-    procedure Printer is new Character_LinkedList.Print_List(Put);
-
     procedure Test_Init is
     begin
         Init(List);
@@ -41,7 +39,7 @@ procedure test_linked_list is
         Append(List, 'B');
         pragma Assert(not Is_Empty(List));
         pragma Assert(Length(List) = 2);
-        Printer(List);
+        Print_List(List);
         pragma Assert(Get_Data(List, 2) = 'B');
         Append(List, 'C');
         pragma Assert(not Is_Empty(List));
@@ -119,24 +117,24 @@ procedure test_linked_list is
     end Test_Is_Empty;
 
 begin
-    Put_Line("Début des tests de linked_list");
+    Put_Line("Début des tests de linked_list...");
     Test_Init;
-    Printer(List);
+    Print_List(List);
     Test_Append;
-    Printer(List);
+    Print_List(List);
     Test_Pop;
-    Printer(List);
+    Print_List(List);
     Test_Append_Two;
-    Printer(List);
+    Print_List(List);
     Test_Pop_Two;
-    Printer(List);
+    Print_List(List);
     Test_Clear;
-    Printer(List);
+    Print_List(List);
     Test_Get_Data_And_Get_Position;
-    Printer(List);
+    Print_List(List);
     Test_Empty_List;
     Test_Append_Multiple;
-    Printer(List);
+    Print_List(List);
     Put_Line("");
     Test_Pop_Multiple;
     Test_Is_Empty;
