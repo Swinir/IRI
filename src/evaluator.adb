@@ -114,5 +114,26 @@ begin
     end if;
 end Unconditional_Branch;
 
+procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+    Input_Value : Unbounded_String;
+    Current : Register.Variable_Record;
+begin
+    Current := Register.Get_Variable(Registre,IR.Token2);
+    Get_Line(Input_Value);
+    Register.Edit_Variable(Current.Name, Current.T_Type, To_Unbounded_String(Input_Value));
+end Read_Variable; 
+
+procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+    Output : Register.Variable_Record;
+begin
+    if Register.Contains_Name(IR.Token2) then
+        Output := Register.Get_Variable(Registre,IR.Token2);
+        Put_Line(Output.Value);
+    else 
+        Put_Line(IR.Token2);
+    end if;
+end Write_Variable; 
+
+
 
 end Evaluator;
