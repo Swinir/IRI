@@ -103,5 +103,16 @@ begin
     end if;
 end Conditional_Branch;
 
+procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
+    Label : Register.Variable_Record;
+begin
+    if Register.Contains_Name(IR.Token2) then
+        Label := Register.Get_Variable(Registre,IR.Token2);
+        PC := Integer'Value(To_String(Label.Value));
+    else 
+        PC := Integer'Value(To_String(IR.Token2));
+    end if;
+end Unconditional_Branch;
+
 
 end Evaluator;
