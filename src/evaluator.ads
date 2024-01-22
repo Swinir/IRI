@@ -32,6 +32,12 @@ procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out M
 procedure Initialize(Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
     Post => Memory.Length(Memoire) = 0 and Register.Length(Registre) = 0;
 
+
+procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
+
+procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
+
+--
 -- Affectation par valeur
 --
 -- Nécessite :
