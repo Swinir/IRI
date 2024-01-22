@@ -2,6 +2,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Memory;
 with Register;
+with Common_Types; use Common_Types;
 
 package Evaluator is
 

@@ -18,6 +18,7 @@ package body LinkedList is
       else
          Linked_List.Head := new T_Node'(Data, Linked_List.Head);
       end if;
+      Linked_List.Length := Linked_List.Length + 1;
    end Insert_Beginning;
 
    procedure Append(Linked_List : in out T_Linked_List; Data : in Element_Type) is

@@ -1,5 +1,4 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with LinkedList;
 
 package Register is
@@ -24,7 +23,10 @@ package Register is
 
     -- Instanciation du package LinkedList avec le type d'élément Variable_Record
     package Variable_List is new LinkedList(Element_Type => Variable_Record, Print_Element => Put);
-    type Register_Type is new Variable_List.T_Linked_List;
+    subtype Register_Type is Variable_List.T_Linked_List;
+    use Variable_List;
+
+    procedure Init(Register : out Register_Type);
 
     -- Procédure pour ajouter une variable dans le registre,
     --
@@ -65,14 +67,6 @@ package Register is
       (Register : in out Register_Type;
         Name     : in     Unbounded_String;
         T_Type     : in     T_Types;
-        Value    : in     Unbounded_String) with
-        Pre  => Contains_Name(Register, Name),
-        Post => Variable_List.Get_Position(Register, (Name, T_Type, Value)) /= -1;
-
-
-    procedure Edit_Value
-      (Register : in out Register_Type;
-        Name     : in     Unbounded_String;
         Value    : in     Unbounded_String) with
         Pre  => Contains_Name(Register, Name),
         Post => Variable_List.Get_Position(Register, (Name, T_Type, Value)) /= -1;
