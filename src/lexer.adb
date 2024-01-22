@@ -1,6 +1,7 @@
 with Ada.Integer_Text_IO;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 package body Lexer is
 
@@ -45,12 +46,12 @@ package body Lexer is
     end Extraire_Mots;
 
 
-    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions) is
+    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) is
         Word : Unbounded_String;
     begin
         Word := Common_Types.Get_Data(Mots, 1);
         if Element(Word, 1) = 'L' then
-            Process_Label(Mots, Instructions); -- TODO : fix parameters
+            Process_Label(Mots, Index, Memoire, Nb_Labels, Nb_Declarations);
             Common_Types.Pop(Mots, 1);
             Word := Common_Types.Get_Data(Mots, 1);
         end if;
@@ -66,6 +67,8 @@ package body Lexer is
             Process_Read(Mots, Instructions);
         elsif Word = To_Unbounded_String("Programme") then
             Process_Function(Mots, Instructions);
+        elsif Common_Types.Get_Position(Mots, To_Unbounded_String(":")) /= -1 then
+            Process_Var_Init(Mots, Memoire, Nb_Declarations);
         elsif Common_Types.Length(Mots) >= 2 then
             if Common_Types.Get_Data(Mots, 2) = To_Unbounded_String("<-") then
                 Process_Value_Variable(Mots, Instructions);
@@ -122,16 +125,36 @@ package body Lexer is
         Instructions.Token4 := Word;
     end Process_If;
 
-    procedure Process_Label(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) is
+    procedure Process_Label(Mots : in T_Words_List; Index : in Integer; Memoire : in out Memory.T_Memory; Nb_Labels : in out Integer; Nb_Declarations : in Integer) is
         Word : Unbounded_String;
+        Old_Instruction : Memory.T_Instructions;
+        New_Instruction : Memory.T_Instructions;
+        Instruction : Memory.T_Instructions;
+        Line_nb : Integer;
+        Old_line_nb : Integer;
     begin
-        Instructions.Token1 := To_Unbounded_String("LABEL");
+        for Index_MEM in 1..Memory.Length(Memoire) loop
+            Old_Instruction := Memory.Get_Data(Memoire, Index_MEM);
+            if Old_Instruction.Token1 = To_Unbounded_String("LABEL") then
+                New_Instruction.Token1 := Old_Instruction.Token1;
+                New_Instruction.Token2 := Old_Instruction.Token2;
+                Old_line_nb := Integer'Value(To_String (Old_Instruction.Token3)) + 1;
+                Ada.Integer_Text_IO.Put(Old_line_nb);
+                New_Instruction.Token3 := To_Unbounded_String(Trim(Integer'Image(Old_line_nb), Ada.Strings.Left));
+                Memory.Edit_Data(Memoire, Index_MEM, New_Instruction);
+            end if;
+        end loop;
+        Nb_Labels := Nb_Labels + 1;
+        Instruction.Token1 := To_Unbounded_String("LABEL");
 
         Word := Common_Types.Get_Data(Mots, 1);
-        Instructions.Token2 := Word;
+        Instruction.Token2 := Word;
 
-        Word := To_Unbounded_String("PLACEHOLDER"); -- TODO : Call the procedure to translate label name into line number
-        Instructions.Token3 := Word;
+        Line_nb := Index + Nb_Labels + (Nb_Declarations - 1);
+        Instruction.Token3 := To_Unbounded_String(Trim(Integer'Image(Line_nb), Ada.Strings.Left));
+
+        Memory.Insert_Beginning(Memoire, Instruction);
+
     end Process_Label;
 
     procedure Process_Value_Variable(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) is
@@ -186,7 +209,7 @@ package body Lexer is
         Instructions.Token1 := To_Unbounded_String("NULL");
     end Process_Null;
 
-    procedure Process_Var_Init(Mots : in T_Words_List; Memoire : in out Memory.T_Memory) is
+    procedure Process_Var_Init(Mots : in T_Words_List; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer) is
         Instruction_Array : Instruction_Array_T;
         Temp_Instruction : Memory.T_Instructions;
         Word : Unbounded_String := To_Unbounded_String("");
@@ -197,6 +220,7 @@ package body Lexer is
             Word := Common_Types.Get_Data(Mots, Index);
 
             if Word /= ":" then
+                Nb_Declarations := Nb_Declarations + 1;
                 Temp_Instruction.Token1 := To_Unbounded_String("INIT"); 
                 Word := Common_Types.Get_Data(Mots, Index);
                 if element(Word, length (Word)) = ',' then
@@ -207,7 +231,6 @@ package body Lexer is
 
                 Instruction_Array(Index) := Temp_Instruction;
             else
-                Ada.Text_IO.Put("bb");
                 Word := Common_Types.Get_Data(Mots, Index + 1);
                 for Index in Instruction_Array'Range loop
                     if Instruction_Array(Index).Token1 /= To_Unbounded_String("") then
@@ -236,12 +259,16 @@ package body Lexer is
         Mots : T_Words_List;
         Index : Integer := 1;
         Instructions : Memory.T_Instructions;
+        Nb_Declarations : Integer := 0;
+        Nb_Labels : Integer := 0;
     begin
         Init_Memory(Memoire);
         while Index <= Common_Types.Length(Lignes) loop
             Mots := Extraire_Mots(Common_Types.Get_Data(Lignes, Index));
-            Process_Keywords(Mots, Index, Instructions);
-            Enregistrer_Instructions(Instructions => Instructions, Memoire => Memoire);
+            Process_Keywords(Mots, Index, Instructions, Memoire, Nb_Declarations, Nb_Labels);
+            if Instructions.Token1 /= To_Unbounded_String("LABEL") and Instructions.Token1 /= To_Unbounded_String("") then
+                Enregistrer_Instructions(Instructions, Memoire);
+            end if;
             Common_Types.Clear(Mots);
             Clear_Instructions(Instructions);
             Index := Index + 1;
