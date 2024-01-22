@@ -156,8 +156,6 @@ package LinkedList is
    -- Lors de l'exécution de `Print_List`, chaque élément de la liste chaînée serait imprimé sur une nouvelle ligne.
    -- Par exemple, si la liste chaînée contient les entiers 1, 2 et 3, l'output serait :
    -- [1,2,3]
-   generic
-      with procedure Print_Element (Item : in Element_Type);
    procedure Print_List(Linked_List : in T_Linked_List);
 
 
