@@ -1,3 +1,4 @@
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 package body Evaluator is
 
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
@@ -73,7 +74,7 @@ begin
     elsif Operator = "/" then
         Result := Left_Value / Right_Value;
     end if;
-    Register.Edit_Variable(Registre, Current.Name, Current.T_Type, To_Unbounded_String(Result));
+    Register.Edit_Variable(Registre, Current.Name, Current.T_Type, To_Unbounded_String(Trim(Integer'Image(Result), Ada.Strings.Left)));
 end Assign_With_Operation;
 
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is

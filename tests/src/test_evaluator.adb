@@ -45,11 +45,13 @@ procedure Test_Evaluator is
         Registre : Register.Register_Type;
         Rec : Register.Variable_Record;
     begin
+        Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S(""));
         IR := (Token1 => S("T1"), Token2 => S("2"), Token3 => S(""), Token4 => S(""));
         Evaluator.Assign_Value(IR, Memoire, Registre);
         Rec := Register.Get_Variable(Registre,S("T1"));
         pragma Assert(Rec.Value = "2");
+        Put("hfgd");
     end Test_Assign_Value;
 
     procedure Test_Assign_With_Operation is
@@ -57,6 +59,7 @@ procedure Test_Evaluator is
         Registre : Register.Register_Type;
         Rec : Register.Variable_Record;
     begin
+        Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S("2"));
         Register.Add_Variable(Registre,S("T2"),Register.T_Entier,S("4"));
         Register.Add_Variable(Registre,S("T3"),Register.T_Entier,S(""));
@@ -71,6 +74,7 @@ procedure Test_Evaluator is
         Registre : Register.Register_Type;
         PC : Integer;
     begin
+        Register.Init(Registre);
         PC := 8;
         Register.Add_Variable(Registre,S("L1"),Register.T_Entier,S("4"));
         Register.Add_Variable(Registre,S("T4"),Register.T_Booleen,S("1"));
@@ -84,6 +88,7 @@ procedure Test_Evaluator is
         Registre : Register.Register_Type;
         PC : Integer;
     begin
+        Register.Init(Registre);
         PC := 6;
         Register.Add_Variable(Registre,S("L1"),Register.T_Entier,S("10"));
         IR := (Token1 => S("GOTO"), Token2 => S("L1"), Token3 => S(""), Token4 => S(""));
@@ -96,6 +101,7 @@ procedure Test_Evaluator is
         Rec : Register.Variable_Record;
         Registre : Register.Register_Type;
     begin
+        Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S(""));
         IR := (Token1 => S("READ"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
         Put_Line("Ecrire = 10 pour voir si test correct");
@@ -108,6 +114,7 @@ procedure Test_Evaluator is
         IR : Memory.T_Instructions;
         Registre : Register.Register_Type;
     begin
+        Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S("5"));
         IR := (Token1 => S("WRITE"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
         Evaluator.Write_Variable(IR, Memoire, Registre);
@@ -117,6 +124,7 @@ procedure Test_Evaluator is
     procedure Test_Null_Operation is
         IR : Memory.T_Instructions;
     begin
+        Register.Init(Registre);
         IR := (Token1 => S("NULL"), Token2 => S(""), Token3 => S(""), Token4 => S(""));
         Evaluator.Null_Operation(IR);
         pragma Assert(IR.Token1 = S("NULL"));

@@ -89,10 +89,10 @@ package body LinkedList is
       Current := Linked_List.Head;
       I := 1;
       while I < Index loop
-         Current := Current.Next;
+         Current := Current.All.Next;
          I := I + 1;
       end loop;
-      return Current.Data;
+      return Current.All.Data;
    end Get_Data;
 
    function Get_Position(Linked_List : in T_Linked_List; Data : in Element_Type) return Integer is
@@ -118,7 +118,7 @@ package body LinkedList is
       Current := Linked_List.Head;
       I := 1;
       while I < Index loop
-         Current := Current.Next;
+         Current := Current.All.Next;
          I := I + 1;
       end loop;
       Current.All.Data := New_Data;
