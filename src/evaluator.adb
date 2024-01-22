@@ -12,10 +12,11 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_
     Variable : Register.Variable_Record;
 begin
     Current := Register.Get_Variable(Registre,IR.Token1);
-    Register.Edit_Variable(Current.Name, Current.T_Type, IR.Token2);
-
     if Register.Contains_Name(IR.Token2) then
         Variable := Register.Get_Variable(Registre,IR.Token2);
+        Register.Edit_Variable(Current.Name, Current.T_Type, Variable.Value);
+    else 
+        Register.Edit_Variable(Current.Name, Current.T_Type, IR.Token2);
     end if;
 
 end Assign_Value;
@@ -32,10 +33,22 @@ begin
     --if Left.T_Type and Right.T_Type =
     Operator := IR.Token3;
     Current := Register.Get_Variable(Registre,IR.Token1);
-    Left := Register.Get_Variable(Registre,IR.Token2);
-    Left_Value :=  Integer'Value(To_String (Left.Value));
-    Right := Register.Get_Variable(Registre,IR.Token4); 
-    Right_Value :=  Integer'Value(To_String (Right.Value));
+    -- Check if variable or value
+    if Register.Contains_Name(IR.Token2) then
+        Left := Register.Get_Variable(Registre,IR.Token2);
+        Left_Value :=  Integer'Value(To_String (Left.Value));
+    else
+        Left_Value :=  Integer'Value(To_String (IR.Token2));
+    end if;
+
+    if Register.Contains_Name(IR.Token4) then
+        Right := Register.Get_Variable(Registre,IR.Token4); 
+        Right_Value :=  Integer'Value(To_String (Right.Value));
+    else
+        Right_Value :=  Integer'Value(To_String (IR.Token4));
+
+    end if;
+
     if Operator = "AND" then
         Result := Left_Value and Right_Value;
     elsif Operator = "OR" then
