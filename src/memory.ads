@@ -15,7 +15,7 @@ package Memory is
    --
    -- Paramètres :
    --     instruction : l'instruction à afficher
-   procedure Put(instruction : in T_Instructions);
+   procedure Put(Instructions : in T_Instructions);
 
    -- Memoire est une liste chaînée d'instructions.
    --
@@ -24,4 +24,5 @@ package Memory is
 
    -- T_Memory est un nouveau type dérivé de la liste chaînée d'instructions. C'est le type qui sera utilisé par les modules qui souhaitent accéder aux instructions.
    type T_Memory is new T_Memory_Linked_List.T_Linked_List;
+
 end Memory;

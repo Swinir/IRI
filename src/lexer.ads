@@ -8,6 +8,10 @@ package Lexer is
 
     subtype T_Words_List is Common_Types.String_List;
 
+    type Words_Array_T is private;
+
+    type Instruction_Array_T is private;
+
     -- Procédure principe qui analyse et enregistre les mots clés d'un programme en mémoire
     -- Pour chaque ligne dans la liste des lignes, extrait les instructions et les enregistre sous formes de mots clés (Tokens) en mémoire.
     --  ex : Memoire : [ { "INIT", "T1", "INTEGER", "" }, -- initialise une variable avec son nom 
@@ -25,9 +29,9 @@ package Lexer is
     -- Paramètres :
     --      Lignes (in) : Liste de lignes d'un programmes à traiter
     --      Mémoire (in out): La mémoire contenant les différentes instructions du programme
-    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : in out Memory.T_Memory) with
+    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : out Memory.T_Memory) with
         Pre => Common_Types.Length(Lignes) > 0,
-        Post => Memory.Length(Memoire) > Common_Types.Length(Lignes);
+        Post => Memory.Length(Memoire) = Common_Types.Length(Lignes);
 
 
     -- Fonction qui analyse et récupére chaque sous-chaîne de la ligne délimité par des espaces.
@@ -39,8 +43,8 @@ package Lexer is
     -- Ex : Ligne := "T3 <- T1 OR T2" = ["T3","<-", "T1", "OR", "T2"]
     -- Paramètres :
     --      Ligne (in) : La ligne d'instruction à découper
-    function Extraire_Mots(Ligne : in String) return T_Words_List with
-        Pre => Ligne'Length > 0;
+    function Extraire_Mots(Ligne : in Unbounded_String) return T_Words_List with
+        Pre => Length(Ligne) > 0;
 
 
     -- Enregistrer l'instructions en paramètre dans la mémoire 
@@ -58,6 +62,7 @@ package Lexer is
         Pre => Instructions.Token1 /= To_Unbounded_String(""),
         Post => Memory.Length(Memoire) > 0;
     
+
     -- Cette procédure identifie les mots clés et génére le quadruplet de mots clés (tokens)
     -- Elle prend une liste de mots en entrée et génère le quadruplet de tokens correspondant avec la procédure approprié.
     -- Elle gère les mots clés de l'instruction actuelle des façon suivante :
@@ -88,7 +93,6 @@ package Lexer is
     --
     -- Ex {"PROGRAM", "", "", ""}
     --
-    --
     -- Nécessite :
     --      La liste de mots ne doit pas être vide
     --
@@ -98,7 +102,7 @@ package Lexer is
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Function(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
+    procedure Process_Function(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
@@ -117,15 +121,11 @@ package Lexer is
     -- Nécessite :
     --      La liste de mots ne doit pas être vide
     --
-    -- Assure :
-    --      Les instructions sont mises à jour avec les nouveaux tokens
-    --
     -- Paramètres :
     --     Mots (in out): La ligne d'instruction à traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Var_Init(Mots : in out T_Words_List; Instructions : out Memory.T_Instructions) with
-        Pre => not Common_Types.Is_Empty(Mots),
-        Post => Instructions.Token1 /= To_Unbounded_String("");
+    procedure Process_Var_Init(Mots : in T_Words_List; Memoire : in out Memory.T_Memory) with
+        Pre => not Common_Types.Is_Empty(Mots);
 
 
     -- Cette procédure est responsable de la gestion du mot clé GOTO trouvé en première position dans la liste de mots donnée.
@@ -331,5 +331,10 @@ package Lexer is
     procedure Process_Null(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) with
         Pre => not Common_Types.Is_Empty(Mots),
         Post => Instructions.Token1 /= To_Unbounded_String("");
+
+private
+    type Words_Array_T is array (1..10) of Unbounded_String;
+
+    type Instruction_Array_T is array (1..10) of Memory.T_Instructions;
 
 end Lexer;
