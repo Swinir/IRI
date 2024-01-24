@@ -41,9 +41,13 @@ package body LinkedList is
       Current : T_Node_Access;
       I : Integer;
    begin
-      if Length(Linked_List) = 1 then
-         Free(Linked_List.Head);
-         Linked_List.Head := null;
+      if Index = 1 then
+         Current := Linked_List.Head;
+         if Length(Linked_List) = 1 then
+            Linked_List.Head := null;
+         else
+            Linked_List.Head := Linked_List.Head.All.Next;
+         end if;
       else 
          I := 1;
          Previous_Element := Linked_List.Head;
@@ -53,9 +57,8 @@ package body LinkedList is
          end loop;
          Current := Previous_Element.All.Next;
          Previous_Element.All.Next := Current.All.Next;
-         Free(Current);
       end if;
-
+      Free(Current);
       Linked_List.Length := Linked_List.Length - 1;
    end Pop;
 
