@@ -84,7 +84,7 @@ begin
     elsif Operator = ">" then
         Result := (if Left_Value > Right_Value then 1 else 0);
     elsif Operator = "<" then
-        Result := (if Left_Value = Right_Value then 1 else 0);
+        Result := (if Left_Value < Right_Value then 1 else 0);
     elsif Operator = "+" then
         Result := Left_Value + Right_Value;
     elsif Operator = "-" then
