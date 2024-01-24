@@ -24,6 +24,9 @@ package Register is
     -- Instanciation du package LinkedList avec le type d'élément Variable_Record
     package Variable_List is new LinkedList(Element_Type => Variable_Record, Print_Element => Put);
     subtype Register_Type is Variable_List.T_Linked_List;
+    use Variable_List;
+
+    procedure Init(Register : out Register_Type);
 
     -- Procédure pour ajouter une variable dans le registre,
     --

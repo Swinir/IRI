@@ -116,6 +116,18 @@ procedure test_linked_list is
         pragma Assert(Is_Empty(List));
     end Test_Is_Empty;
 
+    procedure Test_Insert_Beg is
+    begin
+        Insert_Beginning(List, 'A');
+        Insert_Beginning(List, 'B');
+        Insert_Beginning(List, 'C');
+        pragma Assert(Get_Position(List, 'A') = 3);
+        pragma Assert(Get_Position(List, 'B') = 2);
+        pragma Assert(Get_Position(List, 'C') = 1);
+        Clear(List);
+        pragma Assert(Is_Empty(List));
+    end Test_Insert_Beg;
+
 begin
     Put_Line("Début des tests de linked_list...");
     Test_Init;
@@ -138,5 +150,6 @@ begin
     Put_Line("");
     Test_Pop_Multiple;
     Test_Is_Empty;
+    Test_Insert_Beg;
     Put_Line("Fin des tests de linked_list. Les tests sont passés.");
 end test_linked_list;

@@ -15,6 +15,11 @@ package body register is
         Put_line("-------------------------------");
     end Put;
 
+    procedure Init(Register : out Register_Type) is
+    begin
+        Variable_List.Init(Register);
+    end;
+
 
     procedure Add_Variable
       (Register : in out Register_Type;
@@ -31,10 +36,17 @@ package body register is
         Name     : in     Unbounded_String;
         T_Type   : in     T_Types;
         Value    : in     Unbounded_String) is
-        Index : Integer;
+        Current_Element : Variable_Record;
+        Found_Element_Index : Integer;
     begin
-        Index := Variable_List.Get_Position(Register, (Name, T_Type, Value));
-        Variable_List.Edit_Data(Register, Index, (Name, T_Type, Value));
+        Found_Element_Index := 1;
+        for I in 1 .. Variable_List.Length(Register) loop
+            Current_Element := Variable_List.Get_Data(Register, I);
+            if Current_Element.Name = Name then
+                Found_Element_Index := I;
+            end if;
+        end loop;
+        Variable_List.Edit_Data(Register, Found_Element_Index, (Name, T_Type, Value));
     end Edit_Variable;
 
 
@@ -60,10 +72,10 @@ package body register is
         Current_Element : Variable_Record;
         Found_Element_Index : Integer;
     begin
-        for Index in 1 .. Variable_List.Length(Register) loop
-            Current_Element := Variable_List.Get_Data(Register, Index);
+        for I in 1 .. Variable_List.Length(Register) loop
+            Current_Element := Variable_List.Get_Data(Register, I);
             if Current_Element.Name = Name then
-                Found_Element_Index := Index;
+                Found_Element_Index := I;
             end if;
         end loop;
         return Variable_List.Get_Data(Register, Found_Element_Index);

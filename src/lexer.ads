@@ -39,7 +39,7 @@ package Lexer is
     -- Nécessite :
     --      La ligne ne doit pas être vide
     --
-    -- Ex : Ligne := "T3 <- T1 OR T2" = ["T3","<-", "T1", "OR", "T2"]
+    -- Ex : Ligne := "T3 <- T1 OR T2" = ["T3", "T1", "OR", "T2"]
     -- Paramètres :
     --      Ligne (in) : La ligne d'instruction à découper
     function Extraire_Mots(Ligne : in Unbounded_String) return T_Words_List with
