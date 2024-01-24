@@ -41,15 +41,63 @@ procedure Test_Evaluator is
     --Registre.Add_Variable(Registre,"T4","BOOLEAN","");
 
     procedure Test_Init_Variable is
-
+        IR : Memory.T_Instructions;
+        Registre : Register.Register_Type;
+        Rec : Register.Variable_Record;
     begin
-
+        Register.Init(Registre);
+        pragma Assert(Register.Length(Registre) = 0);
+        IR := (Token1 => S("INIT"), Token2 => S("T1"), Token3 => S("Entier"), Token4 => S(""));
+        Evaluator.Init_Variable(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Register.Length(Registre) = 1);
+        pragma Assert(Rec.Value = "");
+        pragma Assert(Rec.T_Type = Register.T_Entier);
+        IR := (Token1 => S("INIT"), Token2 => S("T2"), Token3 => S("Caractere"), Token4 => S(""));
+        Evaluator.Init_Variable(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("T2"));
+        pragma Assert(Register.Length(Registre) = 2);
+        pragma Assert(Rec.Value = "");
+        pragma Assert(Rec.T_Type = Register.T_Caractere);
+        IR := (Token1 => S("INIT"), Token2 => S("T3"), Token3 => S("Booleen"), Token4 => S(""));
+        Evaluator.Init_Variable(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("T3"));
+        pragma Assert(Register.Length(Registre) = 3);
+        pragma Assert(Rec.Value = "");
+        pragma Assert(Rec.T_Type = Register.T_Booleen);
+        IR := (Token1 => S("INIT"), Token2 => S("T4"), Token3 => S("Entier"), Token4 => S(""));
+        Evaluator.Init_Variable(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("T3"));
+        pragma Assert(Register.Length(Registre) = 4);
+        pragma Assert(Rec.Value = "");
+        pragma Assert(Rec.T_Type = Register.T_Entier);
     end Test_Init_Variable;
 
     procedure Init_Label is
-        
+        IR : Memory.T_Instructions;
+        Registre : Register.Register_Type;
+        Rec : Register.Variable_Record;
     begin
-
+        Register.Init(Registre);
+        pragma Assert(Register.Length(Registre) = 0);
+        IR := (Token1 => S("LABEL"), Token2 => S("L1"), Token3 => S("5"), Token4 => S(""));
+        Evaluator.Init_Label(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("L1"));
+        pragma Assert(Register.Length(Registre) = 1);
+        pragma Assert(Rec.Value = "5");
+        pragma Assert(Rec.T_Type = Register.T_Label);
+        IR := (Token1 => S("LABEL"), Token2 => S("L2"), Token3 => S("10"), Token4 => S(""));
+        Evaluator.Init_Label(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("L2"));
+        pragma Assert(Register.Length(Registre) = 2);
+        pragma Assert(Rec.Value = "10");
+        pragma Assert(Rec.T_Type = Register.T_Label);
+        IR := (Token1 => S("LABEL"), Token2 => S("L3"), Token3 => S("2"), Token4 => S(""));
+        Evaluator.Init_Label(IR, Registre);
+        Rec := Register.Get_Variable(Registre,S("L3"));
+        pragma Assert(Register.Length(Registre) = 3);
+        pragma Assert(Rec.Value = "2");
+        pragma Assert(Rec.T_Type = Register.T_Label);
     end Init_Label;
 
     procedure Test_Assign_Value is
@@ -60,7 +108,7 @@ procedure Test_Evaluator is
         Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S(""));
         IR := (Token1 => S("T1"), Token2 => S("2"), Token3 => S(""), Token4 => S(""));
-        Evaluator.Assign_Value(IR, Memoire, Registre);
+        Evaluator.Assign_Value(IR, Registre);
         Rec := Register.Get_Variable(Registre,S("T1"));
         pragma Assert(Rec.Value = "2");
         Put("hfgd");
@@ -76,7 +124,7 @@ procedure Test_Evaluator is
         Register.Add_Variable(Registre,S("T2"),Register.T_Entier,S("4"));
         Register.Add_Variable(Registre,S("T3"),Register.T_Entier,S(""));
         IR := (Token1 => S("T3"), Token2 => S("T1"), Token3 => S("+"), Token4 => S("T2"));
-        Evaluator.Assign_With_Operation(IR, Memoire, Registre);
+        Evaluator.Assign_With_Operation(IR, Registre);
         Rec := Register.Get_Variable(Registre,S("T3"));
         pragma Assert(Rec.Value = "6");
     end Test_Assign_With_Operation;
@@ -91,7 +139,7 @@ procedure Test_Evaluator is
         Register.Add_Variable(Registre,S("L1"),Register.T_Entier,S("4"));
         Register.Add_Variable(Registre,S("T4"),Register.T_Booleen,S("1"));
         IR := (Token1 => S("IF"), Token2 => S("T4"), Token3 => S("GOTO"), Token4 => S("L1"));
-        Evaluator.Conditional_Branch(IR, Memoire, Registre, PC);
+        Evaluator.Conditional_Branch(IR, Registre, PC);
         pragma Assert(PC = 4);
     end Test_Conditional_Branch;
 
@@ -104,7 +152,7 @@ procedure Test_Evaluator is
         PC := 6;
         Register.Add_Variable(Registre,S("L1"),Register.T_Entier,S("10"));
         IR := (Token1 => S("GOTO"), Token2 => S("L1"), Token3 => S(""), Token4 => S(""));
-        Evaluator.Unconditional_Branch(IR, Memoire, Registre, PC);
+        Evaluator.Unconditional_Branch(IR, Registre, PC);
         pragma Assert(PC = 10);
     end Test_Unconditional_Branch;
 
@@ -117,7 +165,7 @@ procedure Test_Evaluator is
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S(""));
         IR := (Token1 => S("READ"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
         Put_Line("Ecrire = 10 pour voir si test correct");
-        Evaluator.Read_Variable(IR, Memoire, Registre);
+        Evaluator.Read_Variable(IR, Registre);
         Rec := Register.Get_Variable(Registre,S("T1"));
         pragma Assert(Rec.Value = S("10"));
     end Test_Read_Variable;
@@ -129,7 +177,7 @@ procedure Test_Evaluator is
         Register.Init(Registre);
         Register.Add_Variable(Registre,S("T1"),Register.T_Entier,S("5"));
         IR := (Token1 => S("WRITE"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
-        Evaluator.Write_Variable(IR, Memoire, Registre);
+        Evaluator.Write_Variable(IR, Registre);
         Put_Line("Valeur afficher = 5 si test correct");
     end Test_Write_Variable;
 
