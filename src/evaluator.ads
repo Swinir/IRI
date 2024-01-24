@@ -20,12 +20,40 @@ package Evaluator is
 --      PC (in out): Le compteur de programme.
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 /= To_Unbounded_String("");
-    --Post => Register.Length(Registre) > 0;
 
 
-procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
+--
+-- Initialise une variable dans le registre.
+--
+-- Nécessite :
+--      Le registre d'instruction (IR) ne doit pas être null.
+--
+-- Assure :
+--      Le registre est mis à jour avec la nouvelle variable.
+--
+-- Paramètres :
+--      IR (in) : L'instruction à évaluer et exécuter.
+--      Registre (in out): Le registre à mettre à jour.
+procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
+    Pre => IR.Token1 = S("INIT"),
+    Post => Register.Length(Registre) > Register.Length(Registre'Old) AND Register.Contains_Name(Registre, IR.Token2);
 
-procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
+
+--
+-- Initialise une étiquette dans le registre.
+--
+-- Nécessite :
+--      Le registre d'instruction (IR) ne doit pas être null.
+--
+-- Assure :
+--      Le registre est mis à jour avec la nouvelle étiquette.
+--
+-- Paramètres :
+--      IR (in) : L'instruction à évaluer et exécuter.
+--      Registre (in out): Le registre à mettre à jour.
+procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
+    Pre => IR.Token1 = S("LABEL"),
+    Post => Register.Length(Registre) > Register.Length(Registre'Old) AND Register.Contains_Name(Registre, IR.Token2);
 
 --
 -- Affectation par valeur
@@ -40,8 +68,9 @@ procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.R
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 /= To_Unbounded_String("") AND Register.Contains_Name(Registre, IR.Token1),
+    Post => Register.Get_Variable(Registre, IR.Token1).Value = IR.Token2;
+
 
 -- Cas d’une affectation avec opération
 --
@@ -55,8 +84,8 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 /= S("") AND Register.Contains_Name(Registre, IR.Token1);
+
 
 -- Cas d’un branchement conditionnel
 --
@@ -71,8 +100,8 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 = S("IF") AND IR.Token3 = S("GOTO");
+
 
 -- Cas d’un branchement inconditionnel
 --
@@ -87,8 +116,8 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Re
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 = To_Unbounded_String("GOTO");
+
 
 -- Cas d’une lecture
 --
@@ -102,8 +131,8 @@ procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in out 
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 = To_Unbounded_String("READ") AND Register.Contains_Name(Registre, IR.Token2);
+
 
 -- Cas d’écriture
 --
@@ -117,8 +146,8 @@ procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Registe
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 = To_Unbounded_String("WRITE");
+
 
 -- Cas Null
 --
@@ -133,6 +162,6 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in out Regist
 -- Paramètres :
 --      IR (in) : L'instruction null à traiter.
 procedure Null_Operation(IR : in Memory.T_Instructions) with
-    Pre => IR.Token1 /= To_Unbounded_String("");
+    Pre => IR.Token1 = S("NULL") OR IR.Token1 = S("BEGIN") OR IR.Token1 = S("END") OR IR.Token1 = S("PROGRAM");
 
 end Evaluator;
