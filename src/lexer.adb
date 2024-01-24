@@ -1,6 +1,6 @@
 with Ada.Integer_Text_IO;
 with Ada.Text_IO;
-with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
+with Ada.Strings.Unbounded.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 package body Lexer is
@@ -33,7 +33,6 @@ package body Lexer is
     function Extraire_Mots(Ligne : in Unbounded_String) return T_Words_List is
         Words_Array : Words_Array_T;
         Words : T_Words_List;
-        Index : Integer := 1;
     begin
         Common_Types.Init(Words);
         Words_Array := Split(Source => To_String(Ligne), Separator => ' ');
@@ -46,7 +45,7 @@ package body Lexer is
     end Extraire_Mots;
 
 
-    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) is
+    procedure Process_Keywords(Mots : in out T_Words_List; Index : in Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) is
         Word : Unbounded_String;
     begin
         Word := Common_Types.Get_Data(Mots, 1);

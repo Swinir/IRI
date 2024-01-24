@@ -10,7 +10,6 @@ procedure Test_Lexer is
    Instructions : Memory.T_Instructions;
    Instruction_Test : Memory.T_Instructions;
    Mots : T_Words_List;
-   Index : Integer;
    Nb_Labels : Integer := 0;
    Nb_Declarations : Integer := 0;
 begin
