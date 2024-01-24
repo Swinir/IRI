@@ -40,6 +40,18 @@ procedure Test_Evaluator is
     --Registre.Add_Variable(Registre,"T3","INTEGER","");
     --Registre.Add_Variable(Registre,"T4","BOOLEAN","");
 
+    procedure Test_Init_Variable is
+
+    begin
+
+    end Test_Init_Variable;
+
+    procedure Init_Label is
+        
+    begin
+
+    end Init_Label;
+
     procedure Test_Assign_Value is
         IR : Memory.T_Instructions;
         Registre : Register.Register_Type;
@@ -130,6 +142,12 @@ procedure Test_Evaluator is
         pragma Assert(IR.Token1 = S("NULL"));
     end Test_Null_Operation;
 
+    procedure Test_Evaluate_And_Execute is
+    
+    begin
+
+    end Test_Evaluate_And_Execute;
+
 begin
     Inits;
     Put("passed fd");
@@ -146,5 +164,6 @@ begin
     Test_Write_Variable;
     Put("passed 7");
     Test_Null_Operation;
+    Test_Evaluate_And_Execute;
 
 end Test_Evaluator;

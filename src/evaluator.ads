@@ -16,23 +16,11 @@ package Evaluator is
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
-procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
+procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
-
--- Initialisation
---
--- Assure :
---      La mémoire et le registre sont initialisés.
---
--- Paramètres :
---      Memoire (in out): La mémoire à initialiser.
---      Registre (in out): Le registre à initialiser.
-procedure Initialize(Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
-    Post => Memory.Length(Memoire) = 0 and Register.Length(Registre) = 0;
+    Post => Register.Length(Registre) > 0;
 
 
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
@@ -50,11 +38,10 @@ procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.R
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
-procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
+procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas d’une affectation avec opération
 --
@@ -66,11 +53,10 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
-procedure Assign_With_Operation(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
+procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas d’un branchement conditionnel
 --
@@ -82,12 +68,11 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Memoire : in out 
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
-procedure Conditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
+procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas d’un branchement inconditionnel
 --
@@ -99,12 +84,11 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Mem
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
-procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) with
+procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas d’une lecture
 --
@@ -116,11 +100,10 @@ procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out M
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
-procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
+procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas d’écriture
 --
@@ -132,11 +115,10 @@ procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
---      Memoire (in out): La mémoire contenant les différentes instructions du programme.
 --      Registre (in out): Le registre à mettre à jour.
-procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) with
+procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Memory.Length(Memoire) > 0 and Register.Length(Registre) > 0;
+    Post => Register.Length(Registre) > 0;
 
 -- Cas Null
 --
