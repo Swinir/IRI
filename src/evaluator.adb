@@ -3,7 +3,27 @@ package body Evaluator is
 
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
 begin
-    return;
+    if IR.Token1 = S("INIT") then
+        Init_Variable(IR, Registre);
+    elsif IR.Token1 = S("GOTO") then
+        Unconditional_Branch(IR, Memoire, Registre, PC);
+    elsif IR.Token1 = S("IF") then
+        Conditional_Branch(IR, Memoire, Registre, PC);
+    elsif IR.Token1 = S("LABEL") then
+        Init_Label(IR, Registre);
+    elsif IR.Token1 = S("READ") then
+        Read_Variable(IR, Memoire, Registre);
+    elsif IR.Token1 = S("WRITE") then
+        Write_Variable(IR, Memoire, Registre);
+    elsif IR.Token1 = S("NULL") or IR.Token1 = S("PROGRAM") or IR.Token1 = S("BEGIN") or IR.Token1 = S("END") then
+        Null_Operation(IR);
+    else
+        if IR.Token3 /= S("") and IR.Token3 /= S(" ") then
+            Assign_With_Operation(IR, Memoire, Registre);
+        else
+            Assign_Value(IR, Memoire, Registre);
+        end if;
+    end if;
 end;
 
 
