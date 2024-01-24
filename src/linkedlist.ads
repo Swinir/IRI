@@ -24,9 +24,6 @@ package LinkedList is
    --     Linked_List : la liste chaînée à laquelle ajouter
    --     Data : les données à ajouter
    --
-   -- Nécessite :
-   --    Linked_List est initialiser.
-   --
    -- Assure :
    --     La liste chaînée n'est pas vide après l'opération
    --     La longueur de la liste chaînée a augmenté de 1
@@ -39,8 +36,6 @@ package LinkedList is
    -- Paramètres :
    --     Linked_List : la liste chaînée à laquelle ajouter
    --     Data : les données à ajouter
-   -- Nécessite :
-   --    Linked_List est initialiser.
    --
    -- Assure :
    --     La liste chaînée n'est pas vide après l'opération
@@ -94,7 +89,7 @@ package LinkedList is
    --     Linked_List n'est pas vide
    --
    -- Assure :
-   --     Is_Empty (Linked_List)
+   --     S'assure que la liste est vide après avoir tout effacé
    procedure Clear(Linked_List : in out T_Linked_List) with
       Pre => not Is_Empty (Linked_List),
       Post => Is_Empty (Linked_List);
@@ -110,9 +105,11 @@ package LinkedList is
    --     Linked_List n'est pas vide
    --     Index est dans la plage valide (1 à la longueur de la liste chaînée)
    --
+   -- Assure :
+   --     L'index de l'élement retourné est correct.
+   --
    -- Renvoie :
    --     Les données à l'index spécifié dans la liste chaînée
-   --
    function Get_Data(Linked_List : in T_Linked_List; Index : in Integer) return Element_Type with
       Pre => not Is_Empty (Linked_List) and then Index in 1 .. Length(Linked_List),
       Post => Get_Position(Linked_List, Get_Data'Result) = Index;
@@ -123,6 +120,9 @@ package LinkedList is
    -- Paramètres :
    --     Linked_List : la liste chaînée dans laquelle chercher
    --     Data : les données à chercher
+   --
+   -- Assure :
+   --     L'index retourné est inférieur ou égal à la taille de la liste ou si l'élement n'est pas trouvé, -1 est retourné.
    --
    -- Renvoie :
    --     La position de l'élément dans la liste chaînée, ou -1 si l'élément n'est pas trouvé
