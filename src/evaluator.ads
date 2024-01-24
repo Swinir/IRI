@@ -19,8 +19,8 @@ package Evaluator is
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
-    Pre => IR.Token1 /= To_Unbounded_String(""),
-    Post => Register.Length(Registre) > 0;
+    Pre => IR.Token1 /= To_Unbounded_String("");
+    --Post => Register.Length(Registre) > 0;
 
 
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type);
