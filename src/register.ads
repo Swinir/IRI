@@ -96,6 +96,9 @@ package Register is
 
     -- Vérifie si le registre contient une variable.
     --
+    -- Nécessite :
+    --     Le registe n'est pas vide
+    --
     -- Paramètres :
     --     Register_Type : le registre à vérifier
     --     Name : le nom de la variable à rechercher
