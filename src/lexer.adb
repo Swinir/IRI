@@ -80,17 +80,10 @@ package body Lexer is
     end Process_Keywords;
     
 
-
     procedure Enregistrer_Instructions(Instructions : in Memory.T_Instructions; Memoire : in out Memory.T_Memory) is
     begin
         Memory.Append(Memoire, Instructions);
     end Enregistrer_Instructions;
-
-
-    procedure Init_Memory(Memoire : out Memory.T_Memory) is
-    begin
-        Memory.Init(Memoire);
-    end Init_Memory;
 
 
     procedure Process_Function(Mots : in T_Words_List; Instructions : out Memory.T_Instructions) is
@@ -255,14 +248,13 @@ package body Lexer is
         Instructions.Token4 := To_Unbounded_String("");
     end Clear_Instructions;
 
-    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : out Memory.T_Memory) is
+    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : in out Memory.T_Memory) is
         Mots : T_Words_List;
         Index : Integer := 1;
         Instructions : Memory.T_Instructions;
         Nb_Declarations : Integer := 0;
         Nb_Labels : Integer := 0;
     begin
-        Init_Memory(Memoire);
         while Index <= Common_Types.Length(Lignes) loop
             Mots := Extraire_Mots(Common_Types.Get_Data(Lignes, Index));
             Process_Keywords(Mots, Index, Instructions, Memoire, Nb_Declarations, Nb_Labels);

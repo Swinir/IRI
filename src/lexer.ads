@@ -29,7 +29,7 @@ package Lexer is
     -- Paramètres :
     --      Lignes (in) : Liste de lignes d'un programmes à traiter
     --      Mémoire (in out): La mémoire contenant les différentes instructions du programme
-    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : out Memory.T_Memory) with
+    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : in out Memory.T_Memory) with
         Pre => Common_Types.Length(Lignes) > 0;
 
 
