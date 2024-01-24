@@ -166,6 +166,13 @@ begin
 end Null_Operation;
 
 
-
+function Is_End_Of_Programm(IR : in Memory.T_Instructions) return Boolean is
+begin
+    if IR.Token1 = S("END") then
+        return True;
+    else
+        return False;
+    end if;
+end Is_End_Of_Programm;
 
 end Evaluator;

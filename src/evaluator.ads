@@ -11,9 +11,6 @@ package Evaluator is
 -- Nécessite :
 --      Le registre d'instruction (IR) ne doit pas être null.
 --
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
---
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
@@ -26,43 +23,46 @@ procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out 
 -- Initialise une variable dans le registre.
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
+--      Le premier token du registre d'instruction (IR) doit être égal à INIT.
 --
 -- Assure :
---      Le registre est mis à jour avec la nouvelle variable.
+--      Le registre doit contenir la nouvelle variable.
+--      La taille du registre doit avoir augementé de 1.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 = S("INIT"),
-    Post => Register.Length(Registre) > Register.Length(Registre'Old) AND Register.Contains_Name(Registre, IR.Token2);
+    Post => Register.Length(Registre) = Register.Length(Registre'Old) + 1 AND Register.Contains_Name(Registre, IR.Token2);
 
 
 --
 -- Initialise une étiquette dans le registre.
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
+--      Le premier token du registre d'instruction (IR) doit être égal à LABEL.
 --
 -- Assure :
---      Le registre est mis à jour avec la nouvelle étiquette.
+--      Le registre doit contenir la nouvelle étiquette.
+--      La taille du registre doit avoir augementé de 1
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 = S("LABEL"),
-    Post => Register.Length(Registre) > Register.Length(Registre'Old) AND Register.Contains_Name(Registre, IR.Token2);
+    Post => Register.Length(Registre) = Register.Length(Registre'Old) + 1 AND Register.Contains_Name(Registre, IR.Token2);
 
 --
 -- Affectation par valeur
 --
 -- Nécessite :
 --      Le registre d'instruction (IR) ne doit pas être null.
+--      Le registre doit contenir la variable à assigner.
 --
 -- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le registre sont mis à jour selon l'instruction.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -76,9 +76,7 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register
 --
 -- Nécessite :
 --      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le registre doit contenir la variable à assigner.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -90,10 +88,8 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out
 -- Cas d’un branchement conditionnel
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le premier token du registre d'instruction (IR) doit être égal à IF.
+--      Le troisième token du registre d'instruction (IR) doit être égal à GOTO.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -106,10 +102,7 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Re
 -- Cas d’un branchement inconditionnel
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le premier token du registre d'instruction (IR) doit être égal à GOTO.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -122,10 +115,8 @@ procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in out 
 -- Cas d’une lecture
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le permier token du registre d'instruction (IR) doit être égal à READ.
+--      Le registre doit contenir la variable à lire.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -137,10 +128,7 @@ procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Registe
 -- Cas d’écriture
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      La mémoire et le registre sont mis à jour selon l'instruction.
+--      Le premier token du registre d'instruction (IR) doit être égal à WRITE.
 --
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
@@ -154,14 +142,25 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in out Regist
 -- Cette procédure est appelée lorsqu'une instruction null est rencontrée.
 --
 -- Nécessite :
---      Le registre d'instruction (IR) ne doit pas être null.
---
--- Assure :
---      Aucune action n'est effectuée.
+--      Le premier token du registre d'instruction (IR) doit être égal à NULL ou BEGIN ou END ou PROGRAM.
 --
 -- Paramètres :
 --      IR (in) : L'instruction null à traiter.
 procedure Null_Operation(IR : in Memory.T_Instructions) with
     Pre => IR.Token1 = S("NULL") OR IR.Token1 = S("BEGIN") OR IR.Token1 = S("END") OR IR.Token1 = S("PROGRAM");
+
+--
+-- Vérifie si la fin du programme a été atteinte.
+--
+-- Nécessite :
+--      Le premier token du registre d'instruction (IR) doit être égal à "END".
+--
+-- Retourne :
+--      Vrai si la fin du programme a été atteinte, faux sinon.
+--
+-- Paramètres :
+--      IR (in) : L'instruction à vérifier.
+function Is_End_Of_Programm(IR : in Memory.T_Instructions) return Boolean with
+    Pre => IR.Token1 = S("END");
 
 end Evaluator;
