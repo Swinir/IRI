@@ -1,5 +1,4 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Memory;
 with Register;
 with Common_Types; use Common_Types;
@@ -95,7 +94,7 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
-procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
+procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 = S("IF") AND IR.Token3 = S("GOTO");
 
 
@@ -108,7 +107,7 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in out Re
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 --      PC (in out): Le compteur de programme.
-procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) with
+procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in Register.Register_Type; PC : in out Integer) with
     Pre => IR.Token1 = To_Unbounded_String("GOTO");
 
 
@@ -133,21 +132,14 @@ procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Registe
 -- Paramètres :
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
-procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
+procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in Register.Register_Type) with
     Pre => IR.Token1 = To_Unbounded_String("WRITE");
 
 
 -- Cas Null
 --
 -- Cette procédure est appelée lorsqu'une instruction null est rencontrée.
---
--- Nécessite :
---      Le premier token du registre d'instruction (IR) doit être égal à NULL ou BEGIN ou END ou PROGRAM.
---
--- Paramètres :
---      IR (in) : L'instruction null à traiter.
-procedure Null_Operation(IR : in Memory.T_Instructions) with
-    Pre => IR.Token1 = S("NULL") OR IR.Token1 = S("BEGIN") OR IR.Token1 = S("END") OR IR.Token1 = S("PROGRAM");
+procedure Null_Operation;
 
 --
 -- Vérifie si la fin du programme a été atteinte.

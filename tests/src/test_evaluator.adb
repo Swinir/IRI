@@ -1,6 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Assertions; use Ada.Assertions;
 with Evaluator;
 with Memory;
 with Register;
@@ -243,7 +242,7 @@ procedure Test_Evaluator is
     begin
         Register.Init(Registre);
         IR := (Token1 => S("NULL"), Token2 => S(""), Token3 => S(""), Token4 => S(""));
-        Evaluator.Null_Operation(IR);
+        Evaluator.Null_Operation;
         pragma Assert(IR.Token1 = S("NULL"));
     end Test_Null_Operation;
 
