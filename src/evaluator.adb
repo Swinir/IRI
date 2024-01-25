@@ -145,6 +145,14 @@ begin
     return;
 end Null_Operation;
 
+function Is_End_Of_Program(IR : in Memory.T_Instructions) return Boolean is
+begin
+    if IR.Token1 = S("END") then
+        return True;
+    end if;
+    return False;
+end Is_End_Of_Program;
+
 
 
 

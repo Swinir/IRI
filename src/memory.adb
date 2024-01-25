@@ -8,7 +8,7 @@ package body Memory is
     procedure Put(Instructions : in T_Instructions) is
 
     begin
-        Put_line("--- Printing memory content ---");
+        Put_line("-------------");
         Put("Token 1 : ");
         Put(Instructions.Token1);
         Put("  ---  Token 2 : ");
@@ -17,7 +17,7 @@ package body Memory is
         Put(Instructions.Token3);
         Put("  ---  Token 4 : ");
         Put(Instructions.Token4);
-        Put_line("-------------------------------");
+        Put_line("-------------");
     end Put;
 
 end Memory;

@@ -153,4 +153,7 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.
 procedure Null_Operation(IR : in Memory.T_Instructions) with
     Pre => IR.Token1 /= To_Unbounded_String("");
 
+
+function Is_End_Of_Program(IR : in Memory.T_Instructions) return Boolean;
+
 end Evaluator;

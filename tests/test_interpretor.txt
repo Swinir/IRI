@@ -1,6 +1,6 @@
 Programme Facto est
 	n, i, Fact, T1, T2, T3 : Entier
-Début
+Debut
 	n <- 5
 	i <- 1
 	Fact <- 1
