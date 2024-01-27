@@ -13,9 +13,13 @@ package body Interpretor is
         Intepreteur.Memoire := Memoire;
         Intepreteur.Registre := Registre;
         Intepreteur.PC := 1;
-
+    
         Read_File_Content(Path, Intepreteur);
+
+        Intepreteur.IR := Memory.Get_Data(Intepreteur.Memoire, Intepreteur.PC);
     end Init;
+
+
 
     procedure Read_File_Content(Path : in String; Intepreteur : out T_Interpretor) is
         Handle : Reader.File_Handle;
@@ -23,8 +27,29 @@ package body Interpretor is
     begin
         Reader.Open_File(Path => Path, Handle => Handle);
         File_Content_String := Reader.Get_Lines(Handle => Handle);
+        Reader.Close_File(Handle);
         Lexer.Analyser_Lignes(File_Content_String, Intepreteur.Memoire);
     end Read_File_Content;
+
+    function Get_PC(Intepreteur : in T_Interpretor) return Integer is
+    begin
+        return Intepreteur.PC;
+    end Get_PC;
+
+    function Get_IR(Intepreteur : in T_Interpretor) return Memory.T_Instructions is
+    begin
+        return Intepreteur.IR;
+    end Get_IR;
+
+    function Get_Registre(Intepreteur : in T_Interpretor) return Register.Register_Type is 
+    begin
+        return Intepreteur.Registre;
+    end Get_Registre;
+
+    function Get_Memory(Intepreteur : in T_Interpretor) return Memory.T_Memory is 
+    begin
+        return Intepreteur.Memoire;
+    end Get_Memory;
 
     function Get_IR_Value(IR : in Memory.T_Instructions) return Unbounded_String is
     begin
@@ -73,7 +98,6 @@ package body Interpretor is
 
     procedure Interpret_All(Intepreteur : in out T_Interpretor) is
     begin
-        Intepreteur.IR := Memory.Get_Data(Intepreteur.Memoire, Intepreteur.PC);
         while (Intepreteur.PC <= Memory.Length(Intepreteur.Memoire) and not Evaluator.Is_End_Of_Program(Intepreteur.IR)) loop
             Interpret_Single_Instruction(Intepreteur);
         end loop;

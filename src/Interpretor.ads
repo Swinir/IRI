@@ -21,6 +21,15 @@ package Interpretor is
    -- Cette fonction renvoie une représentation en chaîne de caractères du registre d'instruction.
    function Get_IR_Value(IR : in Memory.T_Instructions) return Unbounded_String;
 
+   function Get_PC(Intepreteur : in T_Interpretor) return Integer;
+
+   function Get_IR(Intepreteur : in T_Interpretor) return Memory.T_Instructions;
+
+   function Get_Registre(Intepreteur : in T_Interpretor) return Register.Register_Type;
+
+   function Get_Memory(Intepreteur : in T_Interpretor) return Memory.T_Memory;
+
+
    -- Incrémentation du compteur de programme
    --
    -- Cette procédure incrémente le compteur de programme.
