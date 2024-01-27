@@ -35,8 +35,6 @@ package body Lexer is
         Words_Array : Words_Array_T;
         Words : T_Words_List;
         Index : Integer := 1;
-        Word : Unbounded_String;
-
     begin
         Common_Types.Init(Words);
         Words_Array := Split(Source => To_String(Ligne), Separator => ' ');
@@ -58,11 +56,9 @@ package body Lexer is
             Common_Types.Pop(Mots, 1);
             Word := Common_Types.Get_Data(Mots, 1);
         end if;
-        Ada.Strings.Unbounded.Text_IO.Put_Line(Word);
         if Word = To_Unbounded_String("IF") then
             Process_If(Mots, Instructions);
-        elsif 
-            Word = To_Unbounded_String("GOTO") then
+        elsif Word = To_Unbounded_String("GOTO") then
             Process_Goto(Mots, Instructions);
         elsif Word = To_Unbounded_String("NULL") then
             Process_Null(Mots, Instructions);
