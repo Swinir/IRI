@@ -16,10 +16,10 @@ begin
    --Get_Line(Path); -- TODO : ENABLE THIS AND USE PATH
    Interpretor.Init("tests/test_interpretor.txt", Interpreteur);
 
-   Put_Line("Please enter the running mode (Normal or Debugger):");
+   Put_Line("Please enter the running mode (normal or debugger):");
    User_Input := To_Unbounded_String(Get_Line);
-   if To_Unbounded_String("Normal") = User_Input then Current_Mode := Normal;
-   elsif To_Unbounded_String("Debugger") = User_Input then Current_Mode := Debugger;
+   if To_Unbounded_String("normal") = User_Input then Current_Mode := Normal;
+   elsif To_Unbounded_String("debugger") = User_Input then Current_Mode := Debugger;
    else Put_Line("Invalid mode. Defaulting to Normal mode."); Current_Mode := Normal;
    end if;
 
@@ -29,8 +29,6 @@ begin
       Put_Line("");
       Put_Line("");
       Put_Line("--------------------------------- Memory Content ---------------------------------");
-      Put("-- Memory index value :" & Integer'Image(1) & "  |  ");
-      Memory.Put(Memory.Get_Data(Interpretor.Get_Memory(Interpreteur), 1));
       for I in 1..Memory.Length(Interpretor.Get_Memory(Interpreteur)) loop
          Put_Line("");
          Put_Line("------------------------------------------------");
@@ -42,13 +40,14 @@ begin
       Put_Line("");
       Put_Line("");
       Put_Line("");
+      Interpretor.Display_Single_Info(Interpreteur);
       while (Interpretor.Get_PC(Interpreteur) <= Memory.Length(Interpretor.Get_Memory(Interpreteur)) and not Evaluator.Is_End_Of_Program(Interpretor.Get_IR(Interpreteur))) loop
          Interpretor.Interpret_Single_Instruction(Interpreteur);
-         Interpretor.Display_Single_Info(Interpreteur);
          Interpretor.Display_Infos(Interpreteur);
-         if User_Input /= To_Unbounded_String("Exec") then
+         Interpretor.Display_Single_Info(Interpreteur);
+         if User_Input /= To_Unbounded_String("exec") then
             Put_Line("");
-            Put_Line("Do you want to continue execution without breaks (Write : Exec) or execute only the next instruction (Press enter) ?");
+            Put_Line("Do you want to continue execution without breaks (write : exec) or execute only the next instruction (Press enter) ?");
             User_Input := To_Unbounded_String(Get_Line);
          end if;
       end loop;
