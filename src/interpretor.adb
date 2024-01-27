@@ -13,9 +13,8 @@ package body Interpretor is
         Intepreteur.Memoire := Memoire;
         Intepreteur.Registre := Registre;
         Intepreteur.PC := 1;
-    
-        Read_File_Content(Path, Intepreteur);
 
+        Read_File_Content(Path, Intepreteur);
         Intepreteur.IR := Memory.Get_Data(Intepreteur.Memoire, Intepreteur.PC);
     end Init;
 
@@ -69,10 +68,12 @@ package body Interpretor is
         end loop;
         Put_Line("----------------------------------------");
         Put("----------- PC Value : ");Put(Integer'Image(Intepreteur.PC));Put(" -------------");
+        Put_Line("----------------------------------------");
+        Put_Line("");
         Put_Line("----------- Register Content -----------");
         for Index in 1..Register.Length(Intepreteur.Registre) loop
             Put_Line("Register value position :" & Integer'Image(Index));
-           -- Register.Put(Memory.Get_Data(Intepreteur.Registre, Index));
+            Register.Put(Register.Variable_List.Get_Data(Intepreteur.Registre, Index));
         end loop;
         Put_Line("----------------------------------------");
     end Display_Infos;
@@ -100,6 +101,7 @@ package body Interpretor is
     begin
         while (Intepreteur.PC <= Memory.Length(Intepreteur.Memoire) and not Evaluator.Is_End_Of_Program(Intepreteur.IR)) loop
             Interpret_Single_Instruction(Intepreteur);
+            Interpretor.Display_Infos(Intepreteur); -- Debug
         end loop;
     end Interpret_All;
 end Interpretor;
