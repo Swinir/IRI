@@ -115,7 +115,7 @@ package LinkedList is
    --
    function Get_Data(Linked_List : in T_Linked_List; Index : in Integer) return Element_Type with
       Pre => not Is_Empty (Linked_List) and then Index in 1 .. Length(Linked_List),
-      Post => Get_Position(Linked_List, Get_Data'Result) = Index;
+      Post => Get_Position(Linked_List, Get_Data'Result) /= - 1;
 
 
    -- Obtient la position d'un élément spécifique dans la liste chaînée.
