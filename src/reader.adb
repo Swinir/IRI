@@ -48,7 +48,6 @@ package body Reader is
         function IsAllowed(Char : Character) return Boolean is
         begin
             return Ada.Characters.Handling.Is_Alphanumeric(Char) or else
-       Char = Ada.Characters.Latin_1.HT or else
        (Char >= Ada.Characters.Latin_1.Space and Char <= Ada.Characters.Latin_1.DEL);
         end IsAllowed;
     begin

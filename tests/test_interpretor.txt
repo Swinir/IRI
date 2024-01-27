@@ -1,7 +1,7 @@
 Programme Facto est
 	n, i, Fact, T1, T2, T3 : Entier
 Debut
-	n <- 5
+	n <- 3
 	i <- 1
 	Fact <- 1
 	T1 <- i < n
