@@ -109,14 +109,32 @@ procedure Test_Interpreteur is
         Init("tests/test_interpretor.txt", Interpreteur);
         pragma Assert(Get_PC(Interpreteur) = 1);
         IR := Get_IR(Interpreteur);
-        pragma Assert(IR.Token1 = S(""));
-        pragma Assert(IR.Token2 = S(""));
-        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token1 = S("LABEL"));
+        pragma Assert(IR.Token2 = S("L2"));
+        pragma Assert(IR.Token3 = S("26"));
         pragma Assert(IR.Token4 = S(""));
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
         pragma Assert(Get_PC(Interpreteur) = 2);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("LABEL"));
+        pragma Assert(IR.Token2 = S("L3"));
+        pragma Assert(IR.Token3 = S("20"));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 3);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("LABEL"));
+        pragma Assert(IR.Token2 = S("L1"));
+        pragma Assert(IR.Token3 = S("18"));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 4);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("PROGRAM"));
         pragma Assert(IR.Token2 = S(""));
@@ -125,7 +143,7 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 3);
+        pragma Assert(Get_PC(Interpreteur) = 5);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("INIT"));
         pragma Assert(IR.Token2 = S("n"));
@@ -134,28 +152,10 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 4);
-        IR := Get_IR(Interpreteur);
-        pragma Assert(IR.Token1 = S("INIT"));
-        pragma Assert(IR.Token2 = S("i"));
-        pragma Assert(IR.Token3 = S("Entier"));
-        pragma Assert(IR.Token4 = S(""));
-
-
-        Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 5);
-        IR := Get_IR(Interpreteur);
-        pragma Assert(IR.Token1 = S("INIT"));
-        pragma Assert(IR.Token2 = S("Fact"));
-        pragma Assert(IR.Token3 = S("Entier"));
-        pragma Assert(IR.Token4 = S(""));
-
-
-        Interpretor.Interpret_Single_Instruction(Interpreteur);
         pragma Assert(Get_PC(Interpreteur) = 6);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("INIT"));
-        pragma Assert(IR.Token2 = S("T1"));
+        pragma Assert(IR.Token2 = S("i"));
         pragma Assert(IR.Token3 = S("Entier"));
         pragma Assert(IR.Token4 = S(""));
 
@@ -164,7 +164,7 @@ procedure Test_Interpreteur is
         pragma Assert(Get_PC(Interpreteur) = 7);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("INIT"));
-        pragma Assert(IR.Token2 = S("T2"));
+        pragma Assert(IR.Token2 = S("Fact"));
         pragma Assert(IR.Token3 = S("Entier"));
         pragma Assert(IR.Token4 = S(""));
 
@@ -173,7 +173,7 @@ procedure Test_Interpreteur is
         pragma Assert(Get_PC(Interpreteur) = 8);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("INIT"));
-        pragma Assert(IR.Token2 = S("T3"));
+        pragma Assert(IR.Token2 = S("T1"));
         pragma Assert(IR.Token3 = S("Entier"));
         pragma Assert(IR.Token4 = S(""));
 
@@ -181,14 +181,40 @@ procedure Test_Interpreteur is
         Interpretor.Interpret_Single_Instruction(Interpreteur);
         pragma Assert(Get_PC(Interpreteur) = 9);
         IR := Get_IR(Interpreteur);
-        pragma Assert(IR.Token1 = S("N"));
-        pragma Assert(IR.Token2 = S("5"));
-        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token1 = S("INIT"));
+        pragma Assert(IR.Token2 = S("T2"));
+        pragma Assert(IR.Token3 = S("Entier"));
         pragma Assert(IR.Token4 = S(""));
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
         pragma Assert(Get_PC(Interpreteur) = 10);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("INIT"));
+        pragma Assert(IR.Token2 = S("T3"));
+        pragma Assert(IR.Token3 = S("Entier"));
+        pragma Assert(IR.Token4 = S(""));
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 11);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("BEGIN"));
+        pragma Assert(IR.Token2 = S(""));
+        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 12);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("n"));
+        pragma Assert(IR.Token2 = S("3"));
+        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 13);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("i"));
         pragma Assert(IR.Token2 = S("1"));
@@ -197,7 +223,7 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 11);
+        pragma Assert(Get_PC(Interpreteur) = 14);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("Fact"));
         pragma Assert(IR.Token2 = S("1"));
@@ -206,7 +232,7 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 12);
+        pragma Assert(Get_PC(Interpreteur) = 15);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("T1"));
         pragma Assert(IR.Token2 = S("i"));
@@ -215,7 +241,7 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 13);
+        pragma Assert(Get_PC(Interpreteur) = 16);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("T2"));
         pragma Assert(IR.Token2 = S("i"));
@@ -224,7 +250,7 @@ procedure Test_Interpreteur is
 
 
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 14);
+        pragma Assert(Get_PC(Interpreteur) = 17);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("T3"));
         pragma Assert(IR.Token2 = S("T1"));
@@ -233,7 +259,7 @@ procedure Test_Interpreteur is
 
         for I in 1..3 loop
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 15);
+            pragma Assert(Get_PC(Interpreteur) = 18);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("IF"));
             pragma Assert(IR.Token2 = S("T3"));
@@ -242,7 +268,7 @@ procedure Test_Interpreteur is
 
 
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 17);
+            pragma Assert(Get_PC(Interpreteur) = 20);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("Fact"));
             pragma Assert(IR.Token2 = S("Fact"));
@@ -251,7 +277,7 @@ procedure Test_Interpreteur is
 
 
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 18);
+            pragma Assert(Get_PC(Interpreteur) = 21);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("i"));
             pragma Assert(IR.Token2 = S("i"));
@@ -260,7 +286,7 @@ procedure Test_Interpreteur is
 
 
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 19);
+            pragma Assert(Get_PC(Interpreteur) = 22);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("T1"));
             pragma Assert(IR.Token2 = S("i"));
@@ -269,7 +295,7 @@ procedure Test_Interpreteur is
 
 
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 20);
+            pragma Assert(Get_PC(Interpreteur) = 23);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("T2"));
             pragma Assert(IR.Token2 = S("i"));
@@ -277,7 +303,7 @@ procedure Test_Interpreteur is
             pragma Assert(IR.Token4 = S("n"));
 
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 21);
+            pragma Assert(Get_PC(Interpreteur) = 24);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("T3"));
             pragma Assert(IR.Token2 = S("T1"));
@@ -286,7 +312,7 @@ procedure Test_Interpreteur is
 
             
             Interpretor.Interpret_Single_Instruction(Interpreteur);
-            pragma Assert(Get_PC(Interpreteur) = 21);
+            pragma Assert(Get_PC(Interpreteur) = 25);
             IR := Get_IR(Interpreteur);
             pragma Assert(IR.Token1 = S("GOTO"));
             pragma Assert(IR.Token2 = S("L1"));
@@ -294,13 +320,41 @@ procedure Test_Interpreteur is
             pragma Assert(IR.Token4 = S(""));
         end loop;
 
+
         Interpretor.Interpret_Single_Instruction(Interpreteur);
-        pragma Assert(Get_PC(Interpreteur) = 21);
+        pragma Assert(Get_PC(Interpreteur) = 18);
         IR := Get_IR(Interpreteur);
         pragma Assert(IR.Token1 = S("IF"));
         pragma Assert(IR.Token2 = S("T3"));
         pragma Assert(IR.Token3 = S("GOTO"));
         pragma Assert(IR.Token4 = S("L3"));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 19);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("GOTO"));
+        pragma Assert(IR.Token2 = S("L2"));
+        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 26);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("NULL"));
+        pragma Assert(IR.Token2 = S(""));
+        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token4 = S(""));
+
+
+        Interpretor.Interpret_Single_Instruction(Interpreteur);
+        pragma Assert(Get_PC(Interpreteur) = 27);
+        IR := Get_IR(Interpreteur);
+        pragma Assert(IR.Token1 = S("END"));
+        pragma Assert(IR.Token2 = S(""));
+        pragma Assert(IR.Token3 = S(""));
+        pragma Assert(IR.Token4 = S(""));
 
     end Test_Interpretor;
 
