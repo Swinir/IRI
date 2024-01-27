@@ -1,19 +1,33 @@
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 package body Evaluator is
 
-procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
+procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) is
 begin
-    return;
+    if IR.Token1 = S("INIT") then
+        Init_Variable(IR, Registre);
+    elsif IR.Token1 = S("GOTO") then
+        Unconditional_Branch(IR, Registre, PC);
+    elsif IR.Token1 = S("IF") then
+        Conditional_Branch(IR, Registre, PC);
+    elsif IR.Token1 = S("LABEL") then
+        Init_Label(IR, Registre);
+    elsif IR.Token1 = S("READ") then
+        Read_Variable(IR, Registre);
+    elsif IR.Token1 = S("WRITE") then
+        Write_Variable(IR, Registre);
+    elsif IR.Token1 = S("NULL") or IR.Token1 = S("PROGRAM") or IR.Token1 = S("BEGIN") or IR.Token1 = S("END") then
+        Null_Operation;
+    else
+        if IR.Token3 /= S("") and IR.Token3 /= S(" ") and IR.Token4 /= S("") and IR.Token4 /= S(" ") then
+            Assign_With_Operation(IR, Registre);
+        else
+            Assign_Value(IR, Registre);
+        end if;
+    end if;
 end;
 
-
-procedure Initialize(Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
-begin
-    Memory.Init(Memoire);
-    Register.Init(Registre);
-end Initialize;
-
-procedure Assign_Value(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Current : Register.Variable_Record;
     Variable : Register.Variable_Record;
 begin
@@ -27,7 +41,7 @@ begin
 
 end Assign_Value;
 
-procedure Assign_With_Operation(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Operator : Unbounded_String;
     Current : Register.Variable_Record;
     Left : Register.Variable_Record;
@@ -64,7 +78,7 @@ begin
     elsif Operator = ">" then
         Result := (if Left_Value > Right_Value then 1 else 0);
     elsif Operator = "<" then
-        Result := (if Left_Value = Right_Value then 1 else 0);
+        Result := (if Left_Value < Right_Value then 1 else 0);
     elsif Operator = "+" then
         Result := Left_Value + Right_Value;
     elsif Operator = "-" then
@@ -98,7 +112,7 @@ begin
     Register.Add_Variable(Registre, IR.Token2, Register.T_Label, IR.Token3);
 end Init_Label;
 
-procedure Conditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
+procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in Register.Register_Type; PC : in out Integer) is
     Current : Register.Variable_Record;
     Result : Register.Variable_Record;
 begin
@@ -109,7 +123,7 @@ begin
     end if;
 end Conditional_Branch;
 
-procedure Unconditional_Branch(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type; PC : in out Integer) is
+procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in Register.Register_Type; PC : in out Integer) is
     Label : Register.Variable_Record;
 begin
     if Register.Contains_Name(Registre, IR.Token2) then
@@ -120,7 +134,7 @@ begin
     end if;
 end Unconditional_Branch;
 
-procedure Read_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+procedure Read_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Input_Value : Unbounded_String;
     Current : Register.Variable_Record;
 begin
@@ -129,7 +143,7 @@ begin
     Register.Edit_Variable(Registre, Current.Name, Current.T_Type, Input_Value);
 end Read_Variable; 
 
-procedure Write_Variable(IR : in Memory.T_Instructions; Memoire : in out Memory.T_Memory; Registre : in out Register.Register_Type) is
+procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in Register.Register_Type) is
     Output : Register.Variable_Record;
 begin
     if Register.Contains_Name(Registre, IR.Token2) then
@@ -140,7 +154,7 @@ begin
     end if;
 end Write_Variable; 
 
-procedure Null_Operation(IR : in Memory.T_Instructions) is
+procedure Null_Operation is
 begin
     return;
 end Null_Operation;
@@ -154,6 +168,13 @@ begin
 end Is_End_Of_Program;
 
 
-
+function Is_End_Of_Programm(IR : in Memory.T_Instructions) return Boolean is
+begin
+    if IR.Token1 = S("END") then
+        return True;
+    else
+        return False;
+    end if;
+end Is_End_Of_Programm;
 
 end Evaluator;
