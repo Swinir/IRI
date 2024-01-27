@@ -5,14 +5,12 @@ package body register is
 
     procedure Put(variable : in Variable_Record) is
     begin
-        Put_line("--- Printing memory content ---");
         Put("Variable's name : ");
         Put(variable.Name);
         Put("  ---  Value : ");
         Put(variable.Value);
         Put("  ---  Type : ");
         Put(T_Types'Image(variable.T_Type) );
-        Put_line("-------------------------------");
     end Put;
 
     procedure Init(Register : out Register_Type) is

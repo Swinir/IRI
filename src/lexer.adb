@@ -268,10 +268,6 @@ package body Lexer is
             Clear_Instructions(Instructions);
             Index := Index + 1;
         end loop;
-                    for I in 1..Memory.Length(Memoire) loop
-                    Ada.Integer_Text_IO.Put(I);
-                Memory.Put(Memory.Get_Data(Memoire, I));
-            end loop;
     end Analyser_Lignes;
 
 end lexer;
