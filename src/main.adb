@@ -14,7 +14,7 @@ begin
    Put_Line("Hello, World!");
    Put_Line("Please input the full path to the file you want to evaluate");
    --Get_Line(Path); -- TODO : ENABLE THIS AND USE PATH
-   Interpretor.Init("tests/test_interpretor.txt", Interpreteur);
+   Interpretor.Init("tests/test_2.txt", Interpreteur);
 
    Put_Line("Please enter the running mode (normal or debugger):");
    User_Input := To_Unbounded_String(Get_Line);
@@ -29,7 +29,9 @@ begin
       Put_Line("");
       Put_Line("");
       Put_Line("--------------------------------- Memory Content ---------------------------------");
-      for I in 1..Memory.Length(Interpretor.Get_Memory(Interpreteur)) loop
+      Put("-- Memory index value :" & Integer'Image(1) & "  |  ");
+      Memory.Put(Memory.Get_Data(Interpretor.Get_Memory(Interpreteur), 1));
+      for I in 2..Memory.Length(Interpretor.Get_Memory(Interpreteur)) loop
          Put_Line("");
          Put_Line("------------------------------------------------");
          Put("-- Memory index value :" & Integer'Image(I) & "  |  ");

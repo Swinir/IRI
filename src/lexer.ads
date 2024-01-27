@@ -327,8 +327,8 @@ package Lexer is
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
 private
-    type Words_Array_T is array (1..10) of Unbounded_String;
+    type Words_Array_T is array (1..50) of Unbounded_String;
 
-    type Instruction_Array_T is array (1..10) of Memory.T_Instructions;
+    type Instruction_Array_T is array (1..50) of Memory.T_Instructions;
 
 end Lexer;
