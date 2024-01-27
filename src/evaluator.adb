@@ -66,26 +66,25 @@ begin
         Right_Value :=  Integer'Value(To_String (Right.Value));
     else
         Right_Value :=  Integer'Value(To_String (IR.Token4));
-
     end if;
 
-    if Operator = "AND" then
+    if Operator = S("AND") then
         Result := (Integer(Unsigned_Integer(Left_Value) and Unsigned_Integer(Right_Value)));
-    elsif Operator = "OR" then
+    elsif Operator = S("OR") then
         Result := Integer(Unsigned_Integer(Left_Value) or Unsigned_Integer(Right_Value));
-    elsif Operator = "=" then
+    elsif Operator = S("=") then
         Result := (if Left_Value = Right_Value then 1 else 0);
-    elsif Operator = ">" then
+    elsif Operator = S(">") then
         Result := (if Left_Value > Right_Value then 1 else 0);
-    elsif Operator = "<" then
+    elsif Operator = S("<") then
         Result := (if Left_Value < Right_Value then 1 else 0);
-    elsif Operator = "+" then
+    elsif Operator = S("+") then
         Result := Left_Value + Right_Value;
-    elsif Operator = "-" then
+    elsif Operator = S("-") then
         Result := Left_Value - Right_Value;
-    elsif Operator = "*" then
+    elsif Operator = S("*") then
         Result := Left_Value * Right_Value;
-    elsif Operator = "/" then
+    elsif Operator = S("/") then
         Result := Left_Value / Right_Value;
     end if;
     Register.Edit_Variable(Registre, Current.Name, Current.T_Type, To_Unbounded_String(Trim(Integer'Image(Result), Ada.Strings.Left)));
@@ -118,8 +117,8 @@ procedure Conditional_Branch(IR : in Memory.T_Instructions; Registre : in Regist
 begin
     Result := Register.Get_Variable(Registre,IR.Token2);
     Current := Register.Get_Variable(Registre,IR.Token4);
-    if Integer'Value(To_String(Result.Value)) >= 0 then
-        PC := Integer'Value(To_String(Current.Value));
+    if Integer'Value(To_String(Result.Value)) > 0 then
+        PC := Integer'Value(To_String(Current.Value)) - 1;
     end if;
 end Conditional_Branch;
 
@@ -128,9 +127,9 @@ procedure Unconditional_Branch(IR : in Memory.T_Instructions; Registre : in Regi
 begin
     if Register.Contains_Name(Registre, IR.Token2) then
         Label := Register.Get_Variable(Registre,IR.Token2);
-        PC := Integer'Value(To_String(Label.Value));
+        PC := Integer'Value(To_String(Label.Value)) - 1;
     else 
-        PC := Integer'Value(To_String(IR.Token2));
+        PC := Integer'Value(To_String(IR.Token2)) - 1;
     end if;
 end Unconditional_Branch;
 

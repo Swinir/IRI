@@ -62,12 +62,17 @@ package body Interpretor is
 
     procedure Display_Infos(Intepreteur : in T_Interpretor) is
     begin
-        Put_Line("----------- Memory Content -----------");
-        for Index in 1..Memory.Length(Intepreteur.Memoire) loop
-            Memory.Put(Memory.Get_Data(Intepreteur.Memoire, Index));
-        end loop;
-        Put_Line("----------------------------------------");
+        --  Put_Line("----------- Memory Content -----------");
+        --  for Index in 1..Memory.Length(Intepreteur.Memoire) loop
+        --      Put_Line("Memory value position :" & Integer'Image(Index));
+        --      Memory.Put(Memory.Get_Data(Intepreteur.Memoire, Index));
+        --  end loop;
+        --  Put_Line("----------------------------------------");
         Put("----------- PC Value : ");Put(Integer'Image(Intepreteur.PC));Put(" -------------");
+        Put_Line("----------------------------------------");
+        Put_Line("----------------------------------------");
+        Put("----------- IR Value : ");Put(" -------------");
+        Memory.Put(Intepreteur.IR);
         Put_Line("----------------------------------------");
         Put_Line("");
         Put_Line("----------- Register Content -----------");
@@ -90,7 +95,7 @@ package body Interpretor is
     procedure Interpret_Single_Instruction(Intepreteur : in out T_Interpretor) is
     begin
         if Intepreteur.PC <= Memory.Length(Intepreteur.Memoire) then
-            Evaluator.Evaluate_And_Execute(Intepreteur.IR,Intepreteur.Memoire, Intepreteur.Registre, Intepreteur.PC);
+            Evaluator.Evaluate_And_Execute(Intepreteur.IR,Intepreteur.Registre, Intepreteur.PC);
             Increment_PC(Intepreteur);
             Intepreteur.IR := Memory.Get_Data(Intepreteur.Memoire, Intepreteur.PC);
         end if;
