@@ -13,7 +13,7 @@ begin
 
     test_linked_list;
     test_reader;
-    --Test_Evaluator;
+    Test_Evaluator;
     test_lexer;
     Test_Interpreteur;
 

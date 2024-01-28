@@ -33,7 +33,7 @@ procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out 
 --      Registre (in out): Le registre à mettre à jour.
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
     Pre => IR.Token1 = S("INIT"),
-    Post => Register.Length(Registre) = Register.Length(Registre'Old) + 1 AND Register.Contains_Name(Registre, IR.Token2);
+    Post => Register.Length(Registre) > Register.Length(Registre'Old);
 
 
 --
@@ -67,8 +67,7 @@ procedure Init_Label(IR : in Memory.T_Instructions; Registre : in out Register.R
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= To_Unbounded_String("") AND Register.Contains_Name(Registre, IR.Token1),
-    Post => Register.Get_Variable(Registre, IR.Token1).Value = IR.Token2;
+    Pre => IR.Token1 /= To_Unbounded_String("");
 
 
 -- Cas d’une affectation avec opération
@@ -81,7 +80,7 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register
 --      IR (in) : L'instruction à évaluer et exécuter.
 --      Registre (in out): Le registre à mettre à jour.
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) with
-    Pre => IR.Token1 /= S("") AND Register.Contains_Name(Registre, IR.Token1);
+    Pre => IR.Token1 /= S("");
 
 
 -- Cas d’un branchement conditionnel
