@@ -5,8 +5,8 @@ with LinkedList;
 
 package body Memory is
     
+    -- Procédure pour afficher les instructions
     procedure Put(Instructions : in T_Instructions) is
-
     begin
         Put("Token 1 : ");
         Put(Instructions.Token1);

@@ -7,7 +7,7 @@ package Common_Types is
     package String_Link_List is new LinkedList(Element_Type => Unbounded_String, Print_Element => Put);  
     type String_List is new String_Link_List.T_Linked_List;  -- Définit un nouveau type String_List qui est une instance de la liste chaînée
     
-    type Unsigned_Integer is mod 2**Integer'Size;
+    type Unsigned_Integer is mod 2**Integer'Size; -- Définit un type entier non signé
     
-    function S(Source : String) return Unbounded_String renames To_Unbounded_String;
+    function S(Source : String) return Unbounded_String renames To_Unbounded_String; -- Fonction de conversion de String en Unbounded_String
 end Common_Types; 
