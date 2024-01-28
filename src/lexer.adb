@@ -211,7 +211,7 @@ package body Lexer is
         Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(Word), "("); -- Trouver la position de la première parenthèse ouvrante
         Close_Paren_Pos := To_String(Word)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(Word)), ")"); -- Trouver la position de la dernière parenthèse fermante
 
-        Instructions.Token2 := To_Unbounded_String(Slice(Word, Open_Paren_Pos + 1, Close_Paren_Pos - 1)); -- Extraction de la sous-chaîne entre les parenthèses et enregistre le résultat dans le deuxième token
+        Instructions.Token2 := To_Unbounded_String(Slice(Word, Open_Paren_Pos + 1, Close_Paren_Pos)); -- Extraction de la sous-chaîne entre les parenthèses et enregistre le résultat dans le deuxième token
 
     end Process_Read;
 
