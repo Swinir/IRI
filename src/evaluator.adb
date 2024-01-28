@@ -1,5 +1,7 @@
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+
 package body Evaluator is
 
 procedure Evaluate_And_Execute(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; PC : in out Integer) is
@@ -32,6 +34,7 @@ procedure Assign_Value(IR : in Memory.T_Instructions; Registre : in out Register
     Variable : Register.Variable_Record;
 begin
     Current := Register.Get_Variable(Registre,IR.Token1);
+
     if Register.Contains_Name(Registre, IR.Token2) then
         Variable := Register.Get_Variable(Registre,IR.Token2);
         Register.Edit_Variable(Registre, Current.Name, Current.T_Type, Variable.Value);
@@ -40,6 +43,71 @@ begin
     end if;
 
 end Assign_Value;
+
+function Reverse_String(Str : in Unbounded_String) return Unbounded_String is
+    Result : Unbounded_String := To_Unbounded_String("");
+begin
+    for I in reverse 1 .. Length(Str) loop
+        Result := Result & Element(Str, I);
+    end loop;
+    return Result;
+end Reverse_String;
+
+function Is_Array_Type(IR : in Memory.T_Instructions) return Boolean is
+    Value : Unbounded_String;
+    Open_Paren_Pos : Integer;
+    Close_Paren_Pos : Integer;
+
+begin
+    Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(IR.Token4), "T");
+    Close_Paren_Pos := To_String(IR.Token4)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(IR.Token4)), ":");
+
+    Value := S(Slice(IR.Token4, Open_Paren_Pos + 1, Close_Paren_Pos));
+    return Value = S("TAB:");
+end Is_Array_Type;
+
+procedure Init_Array(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; Variable_Type  : in Register.T_Types) is
+    Value : Unbounded_String;
+    Array_Size : Character;
+begin
+    Array_Size := Element(IR.Token3, Length(IR.Token3));
+    for Num in '1'..Array_Size loop
+        Register.Add_Variable(Registre, IR.Token2 & S("(") & S(Num'Image) & S(")"), Variable_Type, S(""));
+    end loop;
+end Init_Array;
+
+function Get_Array_Index(Token : In Unbounded_String; Registre : in Register.Register_Type) return Unbounded_String is
+    Value : Register.Variable_Record;
+    Open_Paren_Pos : Integer;
+    Close_Paren_Pos : Integer;
+    Array_Index : Unbounded_String;
+    Name : Unbounded_String;
+begin
+    Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(Token), "(");
+    Close_Paren_Pos := To_String(Token)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(Token)), ")");
+    
+    Name := S(Slice(Token, 1, Open_Paren_Pos));
+
+    Array_Index := S(Slice(Token, Open_Paren_Pos + 1, Close_Paren_Pos));
+    If Array_Index >= S("1") and Array_Index <= S("9") then
+        return Token;
+    else
+        Value := Register.Get_Variable(Registre,Array_Index);
+        return Name & S("(") & Value.Value & S(")");
+    end if;
+    
+end Get_Array_Index;
+
+function Is_Variable_Array(Token : in Unbounded_String) return Boolean is
+    Open_Paren_Pos : Integer;
+    Close_Paren_Pos : Integer;
+begin
+    Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(Token), "(");
+    Close_Paren_Pos := To_String(Token)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(Token)), ")");
+
+    return Open_Paren_Pos /= 0 and Close_Paren_Pos /= 0;
+end Is_Variable_Array;
+
 
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Operator : Unbounded_String;
@@ -53,16 +121,27 @@ begin
     --if Left.T_Type and Right.T_Type =
     Operator := IR.Token3;
     Current := Register.Get_Variable(Registre,IR.Token1);
+    if Is_Variable_Array(IR.Token1) then
+        Current.Name := Get_Array_Index(Current.Name, Registre);
+    end if;
+
     -- Check if variable or value
     if Register.Contains_Name(Registre, IR.Token2) then
         Left := Register.Get_Variable(Registre,IR.Token2);
         Left_Value :=  Integer'Value(To_String (Left.Value));
+     -- Check if it is an array
+    elsif Is_Variable_Array(IR.Token2) then
+        Left := Register.Get_Variable(Registre,Get_Array_Index(IR.Token2, Registre));
+        Left_Value := Integer'Value(To_String (Left.Value));
     else
         Left_Value :=  Integer'Value(To_String (IR.Token2));
     end if;
 
     if Register.Contains_Name(Registre, IR.Token4) then
         Right := Register.Get_Variable(Registre,IR.Token4); 
+        Right_Value :=  Integer'Value(To_String (Right.Value));
+    elsif Is_Variable_Array(IR.Token2) then
+        Right := Register.Get_Variable(Registre,Get_Array_Index(IR.Token4, Registre)); 
         Right_Value :=  Integer'Value(To_String (Right.Value));
     else
         Right_Value :=  Integer'Value(To_String (IR.Token4));
@@ -90,6 +169,7 @@ begin
     Register.Edit_Variable(Registre, Current.Name, Current.T_Type, To_Unbounded_String(Trim(Integer'Image(Result), Ada.Strings.Left)));
 end Assign_With_Operation;
 
+
 procedure Init_Variable(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Variable_Type_Name : Unbounded_String;
     Variable_Type : Register.T_Types;
@@ -101,8 +181,14 @@ begin
         Variable_Type := Register.T_Booleen;
     elsif Variable_Type_Name = "Caractere" then
         Variable_Type := Register.T_Caractere;
+    elsif Variable_Type_Name = "Chaine" then
+        Variable_Type := Register.T_Chaine;
     end if;
-    Register.Add_Variable(Registre, IR.Token2, Variable_Type, S(""));
+    if Is_Array_Type(IR) then
+        Init_Array(IR,Registre,Variable_Type);
+    else
+        Register.Add_Variable(Registre, IR.Token2, Variable_Type, S(""));
+    end if;
     
 end Init_Variable;
 
