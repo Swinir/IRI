@@ -143,6 +143,23 @@ begin
    pragma Assert(Instructions.Token1 = To_Unbounded_String("T1") AND Instructions.Token2 = To_Unbounded_String("25"));
    Put_Line("Process_Value_Var test passed");
 
+
+   -- Test for Process_Read
+   Common_Types.Clear(Mots);
+   Common_Types.Init(Mots);
+   Common_Types.Append(Mots, To_Unbounded_String("Lire(Test)"));
+   Process_Read(Mots, Instructions);
+   pragma Assert(Instructions.Token1 = To_Unbounded_String("READ") AND Instructions.Token2 = To_Unbounded_String("Test"));
+   Put_Line("Process_Read test passed");
+
+   -- Test for Process_Write
+   Common_Types.Clear(Mots);
+   Common_Types.Init(Mots);
+   Common_Types.Append(Mots, To_Unbounded_String("Ecrire(Test)"));
+   Process_Write(Mots, Instructions);
+   pragma Assert(Instructions.Token1 = To_Unbounded_String("WRITE") AND Instructions.Token2 = To_Unbounded_String("Test"));
+   Put_Line("Process_Write test passed");
+
    -- Test for Process_Value_Var with logical operator
    Common_Types.Clear(Mots);
    Common_Types.Init(Mots);
