@@ -282,7 +282,6 @@ procedure Test_Evaluator is
     begin
         PC := 1;
         Register.Init(Registre);
-        -- +
         IR := (Token1 => S("INIT"), Token2 => S("T1"), Token3 => S("Entier"), Token4 => S("TAB:3"));
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
         Rec := Register.Get_Variable(Registre,S("T1(1)"));
@@ -298,24 +297,41 @@ procedure Test_Evaluator is
         Register.Add_Variable(Registre,S("I"),Register.T_Entier,S("1"));
         IR := (Token1 => S("T1(I)"), Token2 => S("4"), Token3 => S(""), Token4 => S(""));
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
-         Put_Line("jjjjj");
         Rec := Register.Get_Variable(Registre,S("T1(1)"));
         pragma Assert(Rec.Value = S("4"));
         IR := (Token1 => S("T1(3)"), Token2 => S("T1(1)"), Token3 => S("+"), Token4 => S("T1(2)"));
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
         Rec := Register.Get_Variable(Registre,S("T1(3)"));
         pragma Assert(Rec.Value = S("6"));
-        
         Register.Add_Variable(Registre,S("T9"),Register.T_Entier,S(""));
         Register.Add_Variable(Registre,S("T8"),Register.T_Entier,S("2"));
         Register.Add_Variable(Registre,S("J"),Register.T_Entier,S("3"));
         IR := (Token1 => S("T9"), Token2 => S("T1(J)"), Token3 => S(">"), Token4 => S("T1(T8)"));
-        Put("tesfsd");
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
         Rec := Register.Get_Variable(Registre,S("T9"));
         pragma Assert(Rec.Value = S("1"));
-        
+    end Test_Array;
 
+    procedure Test_Character is
+        IR : Memory.T_Instructions;
+        Registre : Register.Register_Type;
+        Rec : Register.Variable_Record;
+        PC : Integer;
+    begin
+        PC := 1;
+        Register.Init(Registre);
+        IR := (Token1 => S("INIT"), Token2 => S("T1"), Token3 => S("Caractere"), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Rec.Value = S(""));
+        IR := (Token1 => S("T1"), Token2 => S("'2'"), Token3 => S(""), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Rec.Value = S("50"));
+        IR := (Token1 => S("T1"), Token2 => S("'B'"), Token3 => S(""), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Rec.Value = S("66"));
 
         for Index in 1..Register.Length(Registre) loop
             Put_Line("------------------------------------------------");
@@ -323,8 +339,7 @@ procedure Test_Evaluator is
             Register.Put(Register.Variable_List.Get_Data(Registre, Index));
             Put_Line("");
         end loop;
-        -- -
-    end Test_Array;
+    end Test_Character;
 
 begin
     Inits;
@@ -339,5 +354,6 @@ begin
     Test_Null_Operation;
     Test_Evaluate_And_Execute;
     Test_Array;
+    Test_Character;
 
 end Test_Evaluator;

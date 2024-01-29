@@ -56,10 +56,10 @@ procedure Init_Array(IR : in Memory.T_Instructions; Registre : in out Register.R
     Name : Unbounded_String;
 begin
     Array_Size := Element(IR.Token4, Length(IR.Token4));
-    for Num in '1'..Array_Size loop
+    for Num in 1..(Character'Pos(Array_Size)- Character'Pos('0')) loop
         Name := IR.Token2;
         Append(Name,S("("));
-        Append(Name,Element(S(Num'Image), 2));
+        Append(Name, To_Unbounded_String(Trim(Integer'Image(Num), Ada.Strings.Left)));
         Append(Name,S(")"));
         Register.Add_Variable(Registre, Name, Variable_Type, S(""));
     end loop;
@@ -107,8 +107,7 @@ begin
         Current := Register.Get_Variable(Registre, Name);
     else
         Current := Register.Get_Variable(Registre, IR.Token1);
-    end if;
-    
+    end if; 
 
     if Register.Contains_Name(Registre, IR.Token2) then
         Variable := Register.Get_Variable(Registre,IR.Token2);
@@ -116,11 +115,13 @@ begin
     elsif Is_Variable_Array(IR.Token2) then
         Variable := Register.Get_Variable(Registre,Get_Array_Index(IR.Token2, Registre));
         Register.Edit_Variable(Registre, Current.Name, Current.T_Type, Variable.Value);
-    else 
+    elsif Register.T_Types'Pos(Current.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
+        Register.Edit_Variable(Registre, Current.Name, Current.T_Type, To_Unbounded_String(Trim(Integer'Image(Character'Pos((Element(IR.Token2, Length(IR.Token2)-1)))), Ada.Strings.Left)));
+    else
         Register.Edit_Variable(Registre, Current.Name, Current.T_Type, IR.Token2);
+
     end if;
 end Assign_Value;
-
 
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Operator : Unbounded_String;
@@ -147,6 +148,8 @@ begin
     elsif Is_Variable_Array(IR.Token2) then
         Left := Register.Get_Variable(Registre,Get_Array_Index(IR.Token2, Registre));
         Left_Value := Integer'Value(To_String (Left.Value));
+    elsif Register.T_Types'Pos(Current.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
+        Left_Value := Character'Pos(Element(IR.Token2, Length(IR.Token2)-1));
     else
         Left_Value :=  Integer'Value(To_String (IR.Token2));
     end if;
@@ -157,6 +160,8 @@ begin
     elsif Is_Variable_Array(IR.Token2) then
         Right := Register.Get_Variable(Registre,Get_Array_Index(IR.Token4, Registre)); 
         Right_Value :=  Integer'Value(To_String (Right.Value));
+    elsif Register.T_Types'Pos(Current.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
+        Right_Value := Character'Pos(Element(IR.Token4, Length(IR.Token4)-1));
     else
         Right_Value :=  Integer'Value(To_String (IR.Token4));
     end if;
