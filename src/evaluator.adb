@@ -303,8 +303,6 @@ begin
     else -- Sinon, obtient la valeur de la variable
         Current := Register.Get_Variable(Registre, IR.Token2);
     end if;
-    Ada.Text_IO.Put_Line("");
-    Ada.Text_IO.Put("Input :");
     Get_Line(Input_Value); -- Recupere l'entrée utilisateur
     Register.Edit_Variable(Registre, Current.Name, Current.T_Type, Input_Value);
 end Read_Variable; 
