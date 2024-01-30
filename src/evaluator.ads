@@ -140,6 +140,24 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in Register.R
 -- Cette procédure est appelée lorsqu'une instruction null est rencontrée.
 procedure Null_Operation;
 
+
+-- Vérifie si la variable à l'intialisation est de type tableau
+function Is_Array_Init_Type(IR : in Memory.T_Instructions) return Boolean;
+
+-- Procedure qui initialise le registre de N taille case mémoire pour un tableau, N étant la taille d'un type tableau
+procedure Init_Array(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; Variable_Type  : in Register.T_Types);
+
+-- Fonction qui retourne l'index courant dans le quel un tableau est indéxé, retourne l'index de son adresse en registre.
+-- Evalue la variable si l'index est une variable Tab(I) = Evalue la valeur de I et récupère l'adresse dans le registre. 
+-- Sinon ex : Tab(2), récupère l'adresse à l'index 2 du tableau.
+function Get_Array_Index(Token : In Unbounded_String; Registre : in Register.Register_Type) return Unbounded_String;
+
+-- Vérifie si une variable non présente dans le registre est de type tableau
+function Is_Variable_Array(Token : in Unbounded_String) return Boolean;
+
+-- Vérifie si une variable est une chaine de caractère
+function Is_String_Type(Token : Unbounded_String) return Boolean;
+
 --
 -- Vérifie si la fin du programme a été atteinte.
 --

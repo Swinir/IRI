@@ -39,7 +39,7 @@ begin
     return Result;
 end Reverse_String;
 
-function Is_Array_Type(IR : in Memory.T_Instructions) return Boolean is
+function Is_Array_Init_Type(IR : in Memory.T_Instructions) return Boolean is
     Value : Unbounded_String;
     Close_Paren_Pos : Integer;
 
@@ -48,7 +48,7 @@ begin
 
     Value := S(Slice(IR.Token4, 1, Close_Paren_Pos));
     return Value = S("TAB");
-end Is_Array_Type;
+end Is_Array_Init_Type;
 
 procedure Init_Array(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; Variable_Type  : in Register.T_Types) is
     Value : Unbounded_String;
@@ -238,7 +238,7 @@ begin
     elsif Variable_Type_Name = "Chaine" then
         Variable_Type := Register.T_Chaine;
     end if;
-    if Is_Array_Type(IR) then
+    if Is_Array_Init_Type(IR) then
         Init_Array(IR,Registre,Variable_Type);
     else
         Register.Add_Variable(Registre, IR.Token2, Variable_Type, S(""));

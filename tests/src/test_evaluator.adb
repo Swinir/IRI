@@ -356,12 +356,11 @@ procedure Test_Evaluator is
         Rec := Register.Get_Variable(Registre,S("T1"));
         pragma Assert(Rec.Value = S("""Bonjour"""));
         IR := (Token1 => S("T2"), Token2 => S("T1"), Token3 => S("="), Token4 => S("""Bonjour"""));
-        Put("WHAT");
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
         Rec := Register.Get_Variable(Registre,S("T2"));
         pragma Assert(Rec.Value = S("1"));
         IR := (Token1 => S("WRITE"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
-        Ada.Text_IO.Put_Line("Si Test correct affiche la string 'Bonjour' : ");
+        Ada.Text_IO.Put_Line("Si Test correct affiche la string ""Bonjour"" : ");
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
     end Test_String;
 
