@@ -1,7 +1,7 @@
 first line
 second line
 this line is very very very very very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very veryvery very very big
-fourth line 9U348UJDUHI_P¨%%¨1
+fourth line 9U348UJDUHI_P%%1
     5th line with espaces
 6th line with espaces       
     5th line with tab

@@ -1,0 +1,19 @@
+Programme Facto est
+	n, i, Fact, T1, T2, T3 : Entier
+Debut
+	n <- 3
+	i <- 1
+	Fact <- 1
+	T1 <- i < n
+	T2 <- i = n
+	T3 <- T1 OR T2
+ L1 IF T3 GOTO L3
+	GOTO L2
+ L3 Fact <- Fact * i
+	i <- i + 1
+	T1 <- i < n
+	T2 <- i = n
+	T3 <- T1 OR T2
+	GOTO L1
+ L2 NULL
+Fin

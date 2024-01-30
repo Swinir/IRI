@@ -1,0 +1,13 @@
+Programme Simple est
+	T1, T2, T3, T4 : Entier
+Debut
+	T1 <- 1
+	T2 <- 2
+	T4 <- 20
+ L1 T3 <- T1 < T4
+	IF T3 GOTO L3
+	GOTO L2
+ L3 T1 <- T1 * T2
+	GOTO L1
+ L2 NULL
+Fin

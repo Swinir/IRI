@@ -29,7 +29,7 @@ package Lexer is
     -- Paramètres :
     --      Lignes (in) : Liste de lignes d'un programmes à traiter
     --      Mémoire (in out): La mémoire contenant les différentes instructions du programme
-    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : out Memory.T_Memory) with
+    procedure Analyser_Lignes(Lignes : in Common_Types.String_List; Memoire : in out Memory.T_Memory) with
         Pre => Common_Types.Length(Lignes) > 0;
 
 
@@ -77,7 +77,7 @@ package Lexer is
     --     Mots (in out): La ligne d'instruction à traiter
     --     Index (in out): Numéro de la ligne courante traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) with
+    procedure Process_Keywords(Mots : in out T_Words_List; Index : in Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) with
         Pre => not Common_Types.Is_Empty(Mots) and Index >= 0;
 
 
@@ -327,8 +327,8 @@ package Lexer is
         Post => Instructions.Token1 /= To_Unbounded_String("");
 
 private
-    type Words_Array_T is array (1..10) of Unbounded_String;
+    type Words_Array_T is array (1..50) of Unbounded_String;
 
-    type Instruction_Array_T is array (1..10) of Memory.T_Instructions;
+    type Instruction_Array_T is array (1..50) of Memory.T_Instructions;
 
 end Lexer;

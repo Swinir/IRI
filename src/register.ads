@@ -3,7 +3,7 @@ with LinkedList;
 
 package Register is
     -- Définition du type d'énumération T_Types
-    type T_Types is (T_Entier, T_Caractere, T_Label, T_Booleen);
+    type T_Types is (T_Entier, T_Caractere, T_Label, T_Booleen, T_Tableau, T_Chaine);
 
     -- Définition du type d'enregistrement Variable_Record
     type Variable_Record is record
@@ -24,7 +24,6 @@ package Register is
     -- Instanciation du package LinkedList avec le type d'élément Variable_Record
     package Variable_List is new LinkedList(Element_Type => Variable_Record, Print_Element => Put);
     subtype Register_Type is Variable_List.T_Linked_List;
-    use Variable_List;
 
     procedure Init(Register : out Register_Type);
 
