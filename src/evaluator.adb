@@ -1,6 +1,5 @@
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO;
 
 package body Evaluator is
@@ -58,7 +57,6 @@ end Is_Array_Init_Type;
 
 -- Procédure pour initialiser un tableau
 procedure Init_Array(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type; Variable_Type  : in Register.T_Types) is
-    Value : Unbounded_String;
     Array_Size : Character;
     Name : Unbounded_String;
 begin
@@ -146,13 +144,10 @@ end String_Hash;
 
 -- Fonction pour vérifier si une variable est un string
 function Is_String_Type(Token : Unbounded_String) return Boolean is
-    Value : Unbounded_String;
-    Close_Paren_Pos : Integer;
     Open_Paren_Pos : Integer;
 
 begin
     Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(Token), """"); -- Trouve la position du premier guillemet dans le token
-    Close_Paren_Pos := To_String(Token)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(Token)), """"); -- Trouve la position du dernier guillemet dans le token
     
     return Open_Paren_Pos /= 0; -- Retourne vrai si un guillemet a été trouvé, faux sinon
 end Is_String_Type;

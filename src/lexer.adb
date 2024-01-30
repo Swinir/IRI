@@ -1,6 +1,5 @@
-with Ada.Integer_Text_IO;
 with Ada.Text_IO;
-with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
+with Ada.Strings.Unbounded.Text_IO;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 
@@ -37,7 +36,6 @@ package body Lexer is
     function Extraire_Mots(Ligne : in Unbounded_String) return T_Words_List is
         Words_Array : Words_Array_T; -- Tableau de mots pour stocker les mots
         Words : T_Words_List; -- Liste chainée pour stocker les mots
-        Index : Integer := 1; -- Index pour parcourir le tableau de mots
     begin
         Common_Types.Init(Words); -- Initialisation de la liste chainée
         Words_Array := Split(Source => To_String(Ligne), Separator => ' '); -- Division de la ligne en mots à l'aide de la fonction split
@@ -51,7 +49,7 @@ package body Lexer is
 
 
     -- Procédure pour traiter les mots-clés
-    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) is
+    procedure Process_Keywords(Mots : in out T_Words_List; Index : in Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) is
         Word : Unbounded_String; -- Mot actuel
         Debut_Instruction : Memory.T_Instructions; -- Instruction qui va contenir le token BEGIN début
     begin

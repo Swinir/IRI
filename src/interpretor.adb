@@ -1,5 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Common_Types;
+with Evaluator;
+with Lexer;
+with Reader;
 
 package body Interpretor is
 
@@ -7,7 +10,6 @@ package body Interpretor is
     procedure Init(Path : in String; Interpreteur : out T_Interpretor) is
         Memoire :  Memory.T_Memory; -- Mémoire
         Registre : Register.Register_Type; -- Registre
-        IR : Memory.T_Instructions; -- Instruction IR
     begin
         Register.Init(Registre); -- Initialise le registre
         Memory.Init(Memoire); -- Initialise la mémoire

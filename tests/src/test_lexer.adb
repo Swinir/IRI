@@ -256,5 +256,7 @@ begin
    Instruction_Test.Token4 := To_Unbounded_String("TAB:8");
    pragma Assert(Memory.Get_Data(Memoire, 1) = Instruction_Test);
 
+   Common_Types.Clear(Lignes);
+   Memory.Clear(Memoire);
 
 end Test_Lexer;

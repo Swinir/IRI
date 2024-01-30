@@ -77,7 +77,7 @@ package Lexer is
     --     Mots (in out): La ligne d'instruction à traiter
     --     Index (in out): Numéro de la ligne courante traiter
     --     Instructions (out): L'engistrement qui contiendra les 4 tokens
-    procedure Process_Keywords(Mots : in out T_Words_List; Index : in out Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) with
+    procedure Process_Keywords(Mots : in out T_Words_List; Index : in Integer; Instructions : out Memory.T_Instructions; Memoire : in out Memory.T_Memory; Nb_Declarations : in out Integer; Nb_Labels : in out Integer) with
         Pre => not Common_Types.Is_Empty(Mots) and Index >= 0;
 
 

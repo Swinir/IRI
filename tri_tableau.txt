@@ -5,7 +5,8 @@ Programme TriBulle est
 Debut
     -- Initialisation du tableau
     I <- 1
-L1  Lire(Valeurr)
+    Ecrire(Entrez_une_valeur_a_rajouter_au_tableau)
+L1  Lire(Valeur)
     Tab(I) <- Valeur
     I <- I + 1
     T1 <- I < 8

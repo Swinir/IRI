@@ -1,9 +1,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Memory;
 with Register;
-with Evaluator;
-with Lexer;
-with Reader;
+
 
 package Interpretor is
 

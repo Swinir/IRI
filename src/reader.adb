@@ -1,5 +1,6 @@
 with Ada.Characters.Handling;
 with Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded.Text_IO; use Ada.Strings.Unbounded.Text_IO;
 with Common_Types; use Common_Types;
 package body Reader is
 
