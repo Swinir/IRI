@@ -10,11 +10,12 @@ procedure Main is
    Interpreteur : Interpretor.T_Interpretor;
    Current_Mode : Mode := Normal;
    User_Input : Unbounded_String;
+   Path : Unbounded_String;
 begin
    Put_Line("Hello, World!");
    Put_Line("Please input the full path to the file you want to evaluate");
-   --Get_Line(Path); -- TODO : ENABLE THIS AND USE PATH
-   Interpretor.Init("tri_tableau.txt", Interpreteur);
+   Get_Line(Path);
+   Interpretor.Init(To_String(Path), Interpreteur);
 
    Put_Line("Please enter the running mode (normal or debugger):");
    User_Input := To_Unbounded_String(Get_Line);
@@ -43,7 +44,7 @@ begin
       Put_Line("");
       Put_Line("");
       Interpretor.Display_Single_Info(Interpreteur);
-      while (Interpretor.Get_PC(Interpreteur) <= Memory.Length(Interpretor.Get_Memory(Interpreteur)) and not Evaluator.Is_End_Of_Program(Interpretor.Get_IR(Interpreteur))) loop
+      while (Interpretor.Get_PC(Interpreteur) <= Memory.Length(Interpretor.Get_Memory(Interpreteur)) and not Evaluator.Is_End_Of_Programm(Interpretor.Get_IR(Interpreteur))) loop
          Interpretor.Interpret_Single_Instruction(Interpreteur);
          Interpretor.Display_Infos(Interpreteur);
          Interpretor.Display_Single_Info(Interpreteur);

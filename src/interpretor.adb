@@ -111,7 +111,7 @@ package body Interpretor is
     -- Procédure pour interpréter toutes les instructions
     procedure Interpret_All(Interpreteur : in out T_Interpretor) is
     begin
-        while (Interpreteur.PC <= Memory.Length(Interpreteur.Memoire) and not Evaluator.Is_End_Of_Program(Interpreteur.IR)) loop -- Tant que le compteur de programme est inférieur ou égal à la longueur de la mémoire et que ce n'est pas la fin du programme
+        while (Interpreteur.PC <= Memory.Length(Interpreteur.Memoire) and not Evaluator.Is_End_Of_Programm(Interpreteur.IR)) loop -- Tant que le compteur de programme est inférieur ou égal à la longueur de la mémoire et que ce n'est pas la fin du programme
             Interpret_Single_Instruction(Interpreteur); -- Interprète une seule instruction
         end loop;
         Display_Infos(Interpreteur); -- Affiche les informations
