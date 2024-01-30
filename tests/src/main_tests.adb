@@ -17,5 +17,5 @@ begin
     test_lexer;
     Test_Interpreteur;
 
-    Ada.Text_IO.Put_Line("------------- Fin des tests --------------");
+    Ada.Text_IO.Put_Line("------------- Fin des tests : OK --------------");
 end main_tests;
