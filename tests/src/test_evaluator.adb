@@ -332,14 +332,38 @@ procedure Test_Evaluator is
         Evaluator.Evaluate_And_Execute(IR, Registre, PC);
         Rec := Register.Get_Variable(Registre,S("T1"));
         pragma Assert(Rec.Value = S("66"));
-
-        for Index in 1..Register.Length(Registre) loop
-            Put_Line("------------------------------------------------");
-            Put("-- Registry index value :" & Integer'Image(Index) & "  |  ");
-            Register.Put(Register.Variable_List.Get_Data(Registre, Index));
-            Put_Line("");
-        end loop;
+        IR := (Token1 => S("WRITE"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
+        Ada.Text_IO.Put_Line("Si Test correct affiche 'B' : ");
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
     end Test_Character;
+
+    procedure Test_String is
+        IR : Memory.T_Instructions;
+        Registre : Register.Register_Type;
+        Rec : Register.Variable_Record;
+        PC : Integer;
+    begin
+        PC := 1;
+        Register.Init(Registre);
+        IR := (Token1 => S("INIT"), Token2 => S("T1"), Token3 => S("Chaine"), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        IR := (Token1 => S("INIT"), Token2 => S("T2"), Token3 => S("Booleen"), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Rec.Value = S(""));
+        IR := (Token1 => S("T1"), Token2 => S("""Bonjour"""), Token3 => S(""), Token4 => S(""));
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T1"));
+        pragma Assert(Rec.Value = S("""Bonjour"""));
+        IR := (Token1 => S("T2"), Token2 => S("T1"), Token3 => S("="), Token4 => S("""Bonjour"""));
+        Put("WHAT");
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+        Rec := Register.Get_Variable(Registre,S("T2"));
+        pragma Assert(Rec.Value = S("1"));
+        IR := (Token1 => S("WRITE"), Token2 => S("T1"), Token3 => S(""), Token4 => S(""));
+        Ada.Text_IO.Put_Line("Si Test correct affiche la string 'Bonjour' : ");
+        Evaluator.Evaluate_And_Execute(IR, Registre, PC);
+    end Test_String;
 
 begin
     Inits;
@@ -355,5 +379,6 @@ begin
     Test_Evaluate_And_Execute;
     Test_Array;
     Test_Character;
+    Test_String;
 
 end Test_Evaluator;

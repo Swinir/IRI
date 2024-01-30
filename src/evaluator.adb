@@ -123,6 +123,28 @@ begin
     end if;
 end Assign_Value;
 
+-- Converti une chaine de caractère en valeur entière.
+function String_Hash(Str : String) return Integer is
+    Sum : Integer := 0;
+begin
+    for I in Str'Range loop
+        Sum := Sum + Character'Pos(Str(I));
+    end loop;
+    return Sum;
+end String_Hash;
+
+function Is_String_Type(Token : Unbounded_String) return Boolean is
+    Value : Unbounded_String;
+    Close_Paren_Pos : Integer;
+    Open_Paren_Pos : Integer;
+
+begin
+    Open_Paren_Pos := Ada.Strings.Fixed.Index(To_String(Token), """");
+    Close_Paren_Pos := To_String(Token)'Length - Ada.Strings.Fixed.Index(To_String(Reverse_String(Token)), """");
+    
+    return Open_Paren_Pos /= 0;
+end Is_String_Type;
+
 procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out Register.Register_Type) is
     Operator : Unbounded_String;
     Current : Register.Variable_Record;
@@ -131,6 +153,7 @@ procedure Assign_With_Operation(IR : in Memory.T_Instructions; Registre : in out
     Left_Value : Integer;
     Right_Value : Integer;
     Result : Integer;
+
 begin 
     --if Left.T_Type and Right.T_Type =
     if Is_Variable_Array(IR.Token1) then
@@ -143,25 +166,37 @@ begin
     -- Check if variable or value
     if Register.Contains_Name(Registre, IR.Token2) then
         Left := Register.Get_Variable(Registre,IR.Token2);
-        Left_Value :=  Integer'Value(To_String (Left.Value));
+        if Register.T_Types'Pos(Left.T_Type) = Register.T_Types'Pos(Register.T_Chaine) then
+            Left_Value := String_Hash(To_String(Left.Value));
+        else
+            Left_Value :=  Integer'Value(To_String (Left.Value));
+        end if;
      -- Check if it is an array
     elsif Is_Variable_Array(IR.Token2) then
         Left := Register.Get_Variable(Registre,Get_Array_Index(IR.Token2, Registre));
         Left_Value := Integer'Value(To_String (Left.Value));
     elsif Register.T_Types'Pos(Current.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
         Left_Value := Character'Pos(Element(IR.Token2, Length(IR.Token2)-1));
+    elsif Is_String_Type(IR.Token2) then
+        Left_Value := String_Hash(To_String(IR.Token2));
     else
         Left_Value :=  Integer'Value(To_String (IR.Token2));
     end if;
 
     if Register.Contains_Name(Registre, IR.Token4) then
         Right := Register.Get_Variable(Registre,IR.Token4); 
-        Right_Value :=  Integer'Value(To_String (Right.Value));
+        if Register.T_Types'Pos(Left.T_Type) = Register.T_Types'Pos(Register.T_Chaine) then
+            Right_Value := String_Hash(To_String(Right.Value));
+        else
+            Right_Value :=  Integer'Value(To_String (Right.Value));
+        end if;
     elsif Is_Variable_Array(IR.Token2) then
         Right := Register.Get_Variable(Registre,Get_Array_Index(IR.Token4, Registre)); 
         Right_Value :=  Integer'Value(To_String (Right.Value));
     elsif Register.T_Types'Pos(Current.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
         Right_Value := Character'Pos(Element(IR.Token4, Length(IR.Token4)-1));
+    elsif Is_String_Type(IR.Token4) then
+        Right_Value := String_Hash(To_String(IR.Token4));
     else
         Right_Value :=  Integer'Value(To_String (IR.Token4));
     end if;
@@ -256,7 +291,11 @@ procedure Write_Variable(IR : in Memory.T_Instructions; Registre : in Register.R
 begin
     if Register.Contains_Name(Registre, IR.Token2) then
         Output := Register.Get_Variable(Registre,IR.Token2);
-        Ada.Text_IO.Put_Line(To_String(Output.Value));
+        if Register.T_Types'Pos(Output.T_Type) = Register.T_Types'Pos(Register.T_Caractere) then
+            Ada.Text_IO.Put_Line(Character'Val(Integer'Value(To_String(Output.Value)))'Image);
+        else
+            Ada.Text_IO.Put_Line(To_String(Output.Value));
+        end if;
     elsif Is_Variable_Array(IR.Token2) then
         Output := Register.Get_Variable(Registre, Get_Array_Index(IR.Token2, Registre)); 
         Ada.Text_IO.Put_Line(To_String(Output.Value));
