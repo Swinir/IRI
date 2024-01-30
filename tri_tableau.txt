@@ -1,0 +1,50 @@
+-- Code intermédiaire pour le tri à bulles
+Programme TriBulle est
+    I, J, Valeur, Temp, T1, T2, T3, T4, T5, T6, T7, T8, T9 : Entier
+    Tab : Tableau (8) DE Entier
+Debut
+    -- Initialisation du tableau
+    I <- 1
+L1  Lire(Valeurr)
+    Tab(I) <- Valeur
+    I <- I + 1
+    T1 <- I < 8
+    T2 <- I = 8
+    T3 <- T1 OR T2
+    IF T3 GOTO L1
+
+  -- Tri à bulles
+    I <- 1
+L2  J <- 1
+L3  T8 <- J + 1
+    T9 <- Tab(J) > Tab(T8)
+
+L5  IF T9 GOTO L6
+    GOTO L7
+
+L6  Temp <- Tab(J)
+    Tab(J) <- Tab(T8)
+    Tab(T8) <- Temp
+
+L7  J <- J + 1
+    T4 <- 8 - I
+    T5 <- J < T4
+    T6 <- J = T4
+    T7 <- T5 OR T6
+    IF T7 GOTO L3
+
+L9  I <- I + 1
+    T1 <- I < 8
+    T2 <- I = 8
+    T3 <- T1 OR T2
+    IF T3 GOTO L2
+
+    -- Affichage du tableau trié
+    I <- 1
+L8  Ecrire(Tab(I))
+    I <- I + 1
+    T1 <- I < 8
+    T2 <- I = 8
+    T3 <- T1 OR T2
+    IF T3 GOTO L8
+Fin

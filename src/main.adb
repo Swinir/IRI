@@ -14,7 +14,7 @@ begin
    Put_Line("Hello, World!");
    Put_Line("Please input the full path to the file you want to evaluate");
    --Get_Line(Path); -- TODO : ENABLE THIS AND USE PATH
-   Interpretor.Init("tests/test_2.txt", Interpreteur);
+   Interpretor.Init("tri_tableau.txt", Interpreteur);
 
    Put_Line("Please enter the running mode (normal or debugger):");
    User_Input := To_Unbounded_String(Get_Line);

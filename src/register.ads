@@ -3,7 +3,7 @@ with LinkedList;
 
 package Register is
     -- Définition du type d'énumération T_Types
-    type T_Types is (T_Entier, T_Caractere, T_Label, T_Booleen);
+    type T_Types is (T_Entier, T_Caractere, T_Label, T_Booleen, T_Tableau, T_Chaine);
 
     -- Définition du type d'enregistrement Variable_Record
     type Variable_Record is record
